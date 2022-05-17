@@ -1,0 +1,79 @@
+/**
+ * Copyright 2015 Google Inc. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+ html, body {
+  font-family: 'Roboto', 'Helvetica', sans-serif;
+}
+
+.navbar-brand .material-icons {
+  max-height: 50px;
+}
+
+.navbar-brand {
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.nav-item .nav-link {
+  font-size: 20px;
+}
+
+.nav-item .nav-text {
+  font-size: 20px;
+}
+
+#carouselCafe .carousel-item img {
+  object-fit: cover;
+  object-position: center;
+  height: 50vh;
+  overflow: hidden;
+}
+
+#carouselCafe .carousel-item:before {
+  content: "";
+  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 50));
+  display: block;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.row .col:before {
+  content: "";
+  background-image: linear(to bottom, transparent, rgba(0, 0, 0, 100));
+}
+
+section {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+#user-pic{
+  background-image: url('/images/profile_placeholder.png');
+  width: 25px;
+  height: 25px;
+  background-size: 25px;
+  border-radius: 20px;
+  padding-right: 2px;
+}
+
+#mediaCapture {
+  display: none;
+}
+
+
+

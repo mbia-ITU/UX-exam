@@ -1,0 +1,13 @@
+{
+    "hosting": {
+        "site": "ExamGroup16UX",
+        "public": "./public",
+        "headers": [{
+            "source": "**/*.@(js|html)",
+            "headers": [{
+                "key": "Cache-Control",
+                "value": "max-age=0"
+            }]
+        }]
+    }
+}

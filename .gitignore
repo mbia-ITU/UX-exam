@@ -30,3 +30,5 @@
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode
 
 node_modules/
+src/firebase-config.js
+firebase-debug.log

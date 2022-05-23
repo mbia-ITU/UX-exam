@@ -1,6 +1,6 @@
 {
-  "name": "Café Analog",
-  "short_name": "Café Analog",
+  "name": "CollabCar",
+  "short_name": "CollabCar",
   "start_url": "/index.html",
   "display": "standalone",
   "orientation": "portrait"

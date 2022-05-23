@@ -127,7 +127,7 @@ function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(initMap);
     } else {
-        document.getElementById('errorLabel').innerHTML = "Error"
+        alert("Could not get get location")
     }
 }
 

@@ -3,6 +3,10 @@ $secondary: #855c3b;
 $navbar-light-hover-color: $secondary;
 $navbar-light-toggler-border-color: $primary;
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
+#map {
+    height: 180px;
+}
+
 nav {
     background-color: white;
 }

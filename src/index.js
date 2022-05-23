@@ -109,7 +109,7 @@ function addSizeToGoogleProfilePic(url) {
     return url;
 }
 
-var map = L.map('map').setView([51.505, -0.09], 13);
+
 
 // Shortcuts to DOM Elements.
 var userPicElement = document.getElementById('user-pic')
@@ -117,6 +117,8 @@ var userNameElement = document.getElementById('user-name')
 var signInButtonElement = document.getElementById('sign-in')
 var signOutButtonElement = document.getElementById('sign-out')
 var googleMapElement = document.getElementById("googleMap")
+
+
 
 
 // Saves message on form submit.

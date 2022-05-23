@@ -109,12 +109,23 @@ function addSizeToGoogleProfilePic(url) {
     return url;
 }
 
+let map;
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById("googleMap"), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8,
+    });
+}
+
+window.initMap = initMap;
+
+
 // Shortcuts to DOM Elements.
 var userPicElement = document.getElementById('user-pic')
 var userNameElement = document.getElementById('user-name')
 var signInButtonElement = document.getElementById('sign-in')
 var signOutButtonElement = document.getElementById('sign-out')
-
 
 // Saves message on form submit.
 signOutButtonElement.addEventListener('click', signOutUser)

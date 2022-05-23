@@ -1,6 +1,6 @@
 {
     "hosting": {
-        "site": "ExamGroup16UX",
+        "site": "CollabCar",
         "public": "./public",
         "headers": [{
             "source": "**/*.@(js|html)",

@@ -122,7 +122,7 @@ function initMap(position) {
         zoomOffset: -1,
         accessToken: 'pk.eyJ1IjoiYW1hbGllaG9sbSIsImEiOiJjbDNpb3NvNnIwMWszM2VvN3M3M21jZWtlIn0.JiznQK_c9HSqaW39rlZRiA'
     }).addTo(map);
-    var icon = L.MakiMarkers.icon({ icon: "car", color: "#4287f5", size: "m" });
+    var icon = L.MakiMarkers.icon({ icon: "circle", color: "#4287f5", size: "m" });
     L.marker([position.coords.latitude, position.coords.longitude], { icon: icon }).addTo(map);
 }
 

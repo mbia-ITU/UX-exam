@@ -1,19 +1,24 @@
 $primary: rgb(43, 32, 19);
-$secondary: #855c3b;
+$secondary: #4c8e39;
 $navbar-light-hover-color: $secondary;
-$navbar-light-toggler-border-color: $primary;
+$navbar-light-toggler-border-color: white;
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 #map {
     height: 75vh;
 }
 
-nav {
+#navbarContainer {
+    border-bottom: 2px solid lightgray;
     background-color: white;
 }
 
 .navbar .nav-item .nav-link {
     color: $primary;
     font-size: 20px;
+}
+
+.iconColor {
+    color: black;
 }
 
 #user-name {
@@ -24,10 +29,6 @@ nav {
     color: $primary;
     font-size: 20px;
     font-weight: 900;
-}
-
-.icon-color {
-    color: $primary;
 }
 
 html,
@@ -57,14 +58,6 @@ section {
     padding-right: 2px;
 }
 
-.btn-danger {
-    color: white;
-    background-color: #EB5757;
-    border: none;
-    border-radius: .3em;
-    font-weight: bold;
-}
-
-.btn-danger:hover {
-    background-color: #CC4C4C;
+.btn:hover {
+    color: $secondary;
 }

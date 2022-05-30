@@ -109,6 +109,8 @@ function addSizeToGoogleProfilePic(url) {
     return url;
 }
 
+L.MakiMarkers.accessToken = "pk.eyJ1IjoiYW1hbGllaG9sbSIsImEiOiJjbDNpb3NvNnIwMWszM2VvN3M3M21jZWtlIn0.JiznQK_c9HSqaW39rlZRiA";
+
 function initMap(position) {
     var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
 
@@ -120,7 +122,8 @@ function initMap(position) {
         zoomOffset: -1,
         accessToken: 'pk.eyJ1IjoiYW1hbGllaG9sbSIsImEiOiJjbDNpb3NvNnIwMWszM2VvN3M3M21jZWtlIn0.JiznQK_c9HSqaW39rlZRiA'
     }).addTo(map);
-    L.marker([position.coords.latitude, position.coords.longitude], markerOptions).addTo(map);
+    var icon = L.MakiMarkers.icon({ icon: "car", color: "#4287f5", size: "m" });
+    L.marker([position.coords.latitude, position.coords.longitude], { icon: icon }).addTo(map);
 }
 
 function getLocation() {
@@ -133,20 +136,6 @@ function getLocation() {
 
 window.onload = function() {
     getLocation()
-}
-
-var blueIcon = L.icon({
-    iconUrl: '/images/blueMarker.png',
-    iconSize: [30, 50], // size of the icon
-    iconAnchor: [15, 45],
-});
-
-// Creating Marker Options
-var markerOptions = {
-    title: "MyLocation",
-    clickable: true,
-    draggable: true,
-    icon: blueIcon
 }
 
 

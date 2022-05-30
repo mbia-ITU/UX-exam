@@ -124,6 +124,8 @@ function initMap(position) {
     }).addTo(map);
     var icon = L.MakiMarkers.icon({ icon: "circle", color: "#4287f5", size: "m" });
     L.marker([position.coords.latitude, position.coords.longitude], { icon: icon }).addTo(map);
+    carMarkers(map);
+
 }
 
 function getLocation() {
@@ -138,6 +140,32 @@ window.onload = function() {
     getLocation()
 }
 
+function carMarkers(map) {
+    for (var key in cars) {
+        if (cars[key].fuelType == 'Electric') {
+            var iconCar = L.MakiMarkers.icon({ icon: "car", color: "#32a852", size: "m" });
+        } else {
+            var iconCar = L.MakiMarkers.icon({ icon: "car", color: "#4287f5", size: "m" });
+        }
+        var popUpContent = `
+        <div class="d-flex align-items-center flex-column my-3">
+            <img src="${cars[key].pictureUrl}" width="200"/>
+            <h4> ${cars[key].carBrand} </h4>
+            <h6> ${cars[key].fuelLeft} left </h6>
+            <h6> Plate: ${cars[key].plate} </h6>
+            <h6> ${cars[key].price} kr.-/min </h6>
+                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1">Rent Car</button>
+                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1">Reserve Car</button>
+            
+        </div>
+        `;
+        cars[key].marker = L.marker([cars[key].lat, cars[key].lon], { icon: iconCar }).addTo(map).bindPopup(popUpContent);
+    }
+}
+
+var cars = {
+    car1: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '54% battery', plate: 'AB 12345', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.66006357924885', lon: '12.591008245588563', marker: '' }
+}
 
 
 // Shortcuts to DOM Elements.

@@ -32,3 +32,4 @@
 /node_modules/*
 src/firebase-config.js
 firebase-debug.log
+src/.firebaserc

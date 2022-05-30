@@ -150,12 +150,12 @@ function carMarkers(map) {
         var popUpContent = `
         <div class="d-flex align-items-center flex-column my-3">
             <img src="${cars[key].pictureUrl}" width="200"/>
-            <h4> ${cars[key].carBrand} </h4>
-            <h6> ${cars[key].fuelLeft} left </h6>
-            <h6> Plate: ${cars[key].plate} </h6>
-            <h6> ${cars[key].price} kr.-/min </h6>
-                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1">Rent Car</button>
-                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1">Reserve Car</button>
+            <h3> <strong>${cars[key].carBrand} </strong></h4>
+            <h5> ${cars[key].fuelLeft} left </h5>
+            <h5> Plate: ${cars[key].plate} </h5>
+            <h5> ${cars[key].price} kr.-/min </h5>
+                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rounded-lg">Rent Car</button>
+                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rounded-lg">Reserve Car</button>
             
         </div>
         `;

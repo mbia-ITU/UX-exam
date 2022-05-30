@@ -140,10 +140,6 @@ var userPicElement = document.getElementById('user-pic')
 var userNameElement = document.getElementById('user-name')
 var signInButtonElement = document.getElementById('sign-in')
 var signOutButtonElement = document.getElementById('sign-out')
-var googleMapElement = document.getElementById("googleMap")
-
-
-
 
 // Saves message on form submit.
 signOutButtonElement.addEventListener('click', signOutUser)

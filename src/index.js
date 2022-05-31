@@ -149,13 +149,13 @@ function carMarkers(map) {
         }
         var popUpContent = `
         <div class="d-flex align-items-center flex-column my-3">
-            <img src="${cars[key].pictureUrl}" width="200"/>
+            <img src="${cars[key].pictureUrl}" width="200" class="rounded"/>
             <h3> <strong>${cars[key].carBrand} </strong></h4>
             <h5> ${cars[key].fuelLeft} left </h5>
             <h5> Plate: ${cars[key].plate} </h5>
             <h5> ${cars[key].price} kr.-/min </h5>
-                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rounded-lg">Rent Car</button>
-                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rounded-lg">Reserve Car</button>
+                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rounded-lg rentCar" data-bs-toggle="modal" data-bs-target="#confirmCarRentModal">Rent Car</button>
+                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rounded-lg reserveCar">Reserve Car</button>
             
         </div>
         `;
@@ -166,6 +166,7 @@ function carMarkers(map) {
 var cars = {
     car1: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '54% battery', plate: 'AB 12345', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.66006357924885', lon: '12.591008245588563', marker: '' }
 }
+
 
 
 // Shortcuts to DOM Elements.

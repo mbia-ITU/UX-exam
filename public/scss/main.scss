@@ -73,3 +73,13 @@ section {
     background-color: lighten($color: $secondary, $amount: 10%);
     border-color: lighten($color: $secondary, $amount: 10%);
 }
+
+.btnNotConfirmRentCar {
+    background-color: rgb(113, 113, 113);
+}
+
+.btnNotConfirmRentCar,
+.btnConfirmRent {
+    width: 200px;
+    color: white;
+}

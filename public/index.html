@@ -60,6 +60,9 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
     <script src="https://unpkg.com/leaflet-makimarkers@3.1.0/Leaflet.MakiMarkers.js"></script>
+    <script src="https://unpkg.com/leaflet-ajax@2.1.0/dist/leaflet.ajax.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
 </head>
 
@@ -138,8 +141,34 @@
 
         </div>
         <div class="container">
-            <h1 id="errorLabel" hidden></h1>
-            <div id="map"></div>
+            <div class="">
+                <h1 id="errorLabel" hidden></h1>
+                <div id="map"></div>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <div class="map-settings">                    
+                    <h4>Choose what to show on the map</h4>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="charging-stations" checked>
+                        <label class="form-check-label" for="charging-stations">
+                            Charging Stations
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="parking-spots" checked>
+                        <label class="form-check-label" for="parking-spots">
+                          Parking Spots
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="parking-garages" checked>
+                        <label class="form-check-label" for="parking-garages">
+                          Parking Garages
+                        </label>
+                      </div>
+                    </div>
+            </div>
+            
         </div>
 
         <div class="hero">

@@ -403,7 +403,7 @@ function handleEndRide(){
             sessionStorage.setItem("previousRides", JSON.stringify(prevDataArray));
         } else {
             var tmp = JSON.parse(sessionStorage.getItem("previousRides"));
-            var newArray
+            var newArray = []
             var i;
             for (i = 0; i < tmp.length; i++) {
                 newArray.push(tmp[i]);
@@ -414,7 +414,7 @@ function handleEndRide(){
         sessionStorage.setItem('timer', 0);
         var recieptContent = `
             <div class="my-5 d-flex align-items-center flex-column">
-                <p class="h3">Thank you for using your service!</p>
+                <p class="h3">Thank you for using our service!</p>
                 <p class="h3" id="purchase-user-name">${userNameElement.innerText}</p>
             </div>
             <div class="d-flex align-items-center flex-column my-3 border-bottom">
@@ -440,15 +440,18 @@ function handleEndRide(){
             <button class="btn btn-secondary rounded okButton" type="button" data-bs-dismiss="modal">OK</button>
         `;
         document.getElementsByClassName('recieptInfoContainer')[0].innerHTML = recieptContent;
-        sessionStorage.setItem("currentRide", null);
+        sessionStorage.removeItem("currentRide");
         createPreviousRidesContent(prevData);
+        document.getElementsByClassName('currentRideInfo')[0].innerHTML = `<h3>You do not have any current ride </h3>
+        <h5>Go to the front page to rent a car :)</h5>`;
+
     }  
 }
 
 function createPreviousRidesContent(object){
     var recieptContent = `
             <div class="my-5 d-flex align-items-center flex-column">
-                <p class="h3">Thank you for using your service!</p>
+                <p class="h3">Thank you for using our service!</p>
                 <p class="h3" id="purchase-user-name">${userNameElement.innerText}</p>
             </div>
             <div class="d-flex align-items-center flex-column my-3 border-bottom">

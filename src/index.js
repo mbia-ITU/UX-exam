@@ -128,18 +128,6 @@ function initMap(position) {
 
 }
 
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(initMap);
-    } else {
-        alert("Could not get get location")
-    }
-}
-
-window.onload = function() {
-    getLocation()
-}
-
 function carMarkers(map) {
     for (var key in cars) {
         if (cars[key].fuelType == 'Electric') {
@@ -148,23 +136,131 @@ function carMarkers(map) {
             var iconCar = L.MakiMarkers.icon({ icon: "car", color: "#4287f5", size: "m" });
         }
         var popUpContent = `
-        <div class="d-flex align-items-center flex-column my-3">
-            <img src="${cars[key].pictureUrl}" width="200" class="rounded"/>
-            <h3> <strong>${cars[key].carBrand} </strong></h4>
-            <h5> ${cars[key].fuelLeft} left </h5>
-            <h5> Plate: ${cars[key].plate} </h5>
-            <h5> ${cars[key].price} kr.-/min </h5>
-                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rounded-lg rentCar" data-bs-toggle="modal" data-bs-target="#confirmCarRentModal">Rent Car</button>
-                <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rounded-lg reserveCar">Reserve Car</button>
+        <div class="d-flex align-items-center flex-column my-3 carInfoMarker">
+            <img src="${cars[key].pictureUrl}" width="200" class="rounded picture-Url-popup"/>
+            <h3 class="car-brand-popup" > <strong>${cars[key].carBrand} </strong></h4>
+            <h5 class="car-fuel-left-popup"> ${cars[key].fuelLeft} left </h5>
+            <h5 class="car-plate-popup"> Plate: ${cars[key].plate} </h5>
+            <h5 class="car-price-popup"> ${cars[key].price} kr.-/min </h5>
+            <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rounded-lg rentCar" onclick="handleRentCar()" data-bs-toggle="modal" data-bs-target="#confirmCarRentModal">Rent Car</button>
+            <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rounded-lg reserveCar" onclick="handleReserveCar()" data-bs-toggle="modal" data-bs-target="#confirmCarReserveModal">Reserve Car</button>
             
         </div>
         `;
-        cars[key].marker = L.marker([cars[key].lat, cars[key].lon], { icon: iconCar }).addTo(map).bindPopup(popUpContent);
+        cars[key].marker = L.marker([cars[key].lat, cars[key].lon], { icon: iconCar }).addTo(map).bindPopup(popUpContent).on('click', saveCurrentCar(key));
     }
+}
+
+function saveCurrentCar(key){
+    var currentCarContent = `
+    <div class="d-flex align-items-center flex-column my-3">
+        <img src="${cars[key].pictureUrl}" width="200" class="rounded picture-Url"/>
+        <h3 class="car-brand" > <strong>${cars[key].carBrand} </strong></h4>
+        <h5 class="car-fuel-left"> ${cars[key].fuelLeft} left</h5>
+        <h5 class="car-plate">Plate: ${cars[key].plate} </h5>
+        <h5 class="car-price">${cars[key].price} kr.-/min</h5>            
+    </div>
+    `;
+    sessionStorage.setItem('currentRidePopUp', currentCarContent);
 }
 
 var cars = {
     car1: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '54% battery', plate: 'AB 12345', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.66006357924885', lon: '12.591008245588563', marker: '' }
+}
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(initMap);
+    } else {
+        alert("Could not get get location");
+    }
+}
+
+window.onload = function() {
+    if (document.getElementsByClassName('activeHome')[0]){
+        getLocation();
+        document.getElementsByClassName('btnConfirmRent')[0].addEventListener('click', handleConfirmRent);
+        document.getElementsByClassName('btnConfirmReserve')[0].addEventListener('click', handleConfirmReserve);
+    } else {
+        loadCurrentRide();
+    }
+}
+
+function loadCurrentRide(){
+    var currentRideInfoLabel = document.getElementsByClassName('currentRideInfo')[0];
+    if (sessionStorage.getItem("currentRide") != null ){
+        currentRideInfoLabel.innerHTML = sessionStorage.getItem("currentRide");
+        startTimeCounter();
+    } else {
+        currentRideInfoLabel.innerHTML = `<h3>You do not have any current ride </h3>
+                                            <h5>Go to the front page to rent a car :)</h5>`
+    }
+    
+}
+
+
+
+function handleConfirmRent(event){
+    var button = event.target;
+    var carInfo = button.parentElement.parentElement;
+    var pictureUrl = carInfo.getElementsByClassName('picture-Url')[0].src;
+    var carBrand = carInfo.getElementsByClassName('car-brand')[0].innerText;
+    var carPlate = carInfo.getElementsByClassName('car-plate')[0].innerText;
+    var carPrice = carInfo.getElementsByClassName('car-price')[0].innerText;
+    const currentDate = new Date()
+    var timeDate = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + " " + checkTime(currentDate.getHours()) + ":" + checkTime(currentDate.getMinutes());
+    var currentRideContent = `
+        <div class="card w-80">
+            <div class="row g-0 d-flex align-items-center" >
+                <div class="col-md-4">
+                    <img src="${pictureUrl}" width="200px" class="rounded picture-Url img-fluid"/>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                            <h3 class="car-brand card-title" > <strong>${carBrand} </strong></h4>
+                            <h5 class="car-plate card-text">${carPlate} </h5>  
+                            <h4 class="card-text ride-date">${timeDate}</h5>
+                            <h6 id="timerRented" class="card-text"></h6>
+                            <h6 id="car-price-current" class="card-text">Price: ${carPrice}</h6>
+                            <h6 id="totalPriceCurrentRide" class="card-text">Total: time*price</h6>
+                    </div>
+                </div>
+                <div class="container">
+                     <a href="#" class="btn btn-danger float-end rounded" data-bs-toggle="modal" data-bs-target="#confirmEndRideModal">End ride</a>
+                </div>                       
+            </div>
+        </div>
+    `;
+    sessionStorage.setItem("currentRide", currentRideContent);
+}
+
+
+var startTimeCar = Math.floor(Date.now() / 1000);
+
+function startTimeCounter() {
+    var now = Math.floor(Date.now() / 1000); // get the time now
+    var diff = now - startTimeCar; // diff in seconds between now and start
+    var h = Math.floor((diff/60)/60);
+    var m = Math.floor(diff / 60);
+    var s = Math.floor(diff % 60);
+    h = checkTime(h);
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById("timerRented").innerHTML ="Time: " + h + ":" + m + ":" + s; // update the element 
+    var t = setTimeout(startTimeCounter, 500); // set a timeout to update the timer
+    var priceElement = document.getElementById('car-price-current');
+    var price = priceElement.innerText.replace('kr.-/min', '');
+    var price = parseInt(price.replace('Price:', ''));
+    document.getElementById('totalPriceCurrentRide').innerHTML = "Total: " + Math.floor((m * price) + 4) + "kr.-";
+}
+
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+}
+
+function handleConfirmReserve(){
+
 }
 
 

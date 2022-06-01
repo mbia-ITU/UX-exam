@@ -63,23 +63,19 @@ section {
     border-color: $secondary;
 }
 
-.blueBottons {
+.blueBottons, .btnNotConfirm,
+.btnConfirmRent, .btnConfirmReserve, .okButton {
     color: white;
     width: 200px;
 }
 
-.blueBottons:hover {
+.blueBottons:hover, .btnNotConfirm:hover,
+.btnConfirmRent:hover,.btnConfirmReserve:hover , .okButton:hover{
     color: white;
     background-color: lighten($color: $secondary, $amount: 10%);
     border-color: lighten($color: $secondary, $amount: 10%);
 }
 
-.btnNotConfirmRentCar {
+.btnNotConfirm {
     background-color: rgb(113, 113, 113);
-}
-
-.btnNotConfirmRentCar,
-.btnConfirmRent {
-    width: 200px;
-    color: white;
 }

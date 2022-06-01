@@ -186,7 +186,23 @@ window.onload = function() {
         if (sessionStorage.getItem('previousRides') != null){
             loadPreviousRides();
         }
+        // stops modal from being shown if user is not signed in or don't have enough money (used in purchaseClicked)
+        addEventListenerModal(document.getElementById('confirmCarReserveModal'))
+        addEventListenerModal(document.getElementById('confirmEndRideModal'))
+        addEventListenerModal(document.getElementById('confirmCarRentModal'))
+        
     }
+}
+
+function addEventListenerModal(modal){
+    var bool = true
+        modal.addEventListener('show.bs.modal', function(event) {
+            if (checkSignedIn() != true) {
+                bool = false
+                alert('Please sign in!')
+                return event.preventDefault()
+            }
+        })
 }
 
 function setCheckboxes(layers, map){
@@ -300,7 +316,6 @@ function loadCurrentRide(){
 }
 
 function loadPreviousRides(){
-    console.log(sessionStorage.getItem('previousRides'));
     var previousRides = JSON.parse(sessionStorage.getItem("previousRides"));
     var i;
     for (i = 0; i < previousRides.length; i++) {

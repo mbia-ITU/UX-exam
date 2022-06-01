@@ -1,3 +1,8 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
 /**
  * To find your Firebase config object:
  * 
@@ -6,14 +11,19 @@
  * 3. Select Config from the Firebase SDK snippet pane.
  * 4. Copy the config object snippet, then add it here.
  */
-const config = {
-    apiKey: "AIzaSyA9wZ09uLOeZYKOBhBdTEkhPxuc4qfvwBA",
-    authDomain: "uewp22.firebaseapp.com",
-    projectId: "uewp22",
-    storageBucket: "uewp22.appspot.com",
-    messagingSenderId: "209374884917",
-    appId: "1:209374884917:web:239eb5555f2fe5b0906d7c"
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyDnF2BO12sJ1IaMzM0dYUB8UrE0iCLpfwU",
+  authDomain: "examsproject-cefb2.firebaseapp.com",
+  projectId: "examsproject-cefb2",
+  storageBucket: "examsproject-cefb2.appspot.com",
+  messagingSenderId: "303301852782",
+  appId: "1:303301852782:web:366ed95c4f98b3e285f07f"
 };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
 export function getFirebaseConfig() {
     if (!config || !config.apiKey) {

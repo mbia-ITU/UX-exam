@@ -82,7 +82,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#profile">Profile</a>
+                            <a class="nav-link" href="profile.html">Profile</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="history.html">History</a>
@@ -309,12 +309,11 @@
                     <div class="modal-body">
                         <p class="h3">At what time do you want to reserve it?</p>
                         <div class="container carInfoReserve">
-                            <p>car</p>
                         </div>
                         <div class="container d-flex flex-column align-items-center justify-content-evenly">
                             <p class="h5">Choose your start time</p> 
                             <div class="container d-flex flex-row align-items-center justify-content-evenly pt-3">
-                            <select class="form-select" aria-label="select hour start">
+                            <select class="form-select" aria-label="select hour start" id="chosen-hour-reserve">
                                 <option selected>Choose hour</option>
                                 <option value="0">00</option>
                                 <option value="1">1</option>
@@ -341,7 +340,7 @@
                                 <option value="22">22</option>
                                 <option value="23">23</option>
                               </select>
-                              <select class="form-select" aria-label="select minute start">
+                              <select class="form-select" aria-label="select minute start" id="chosen-minute-reserve">
                                 <option selected>Choose minute</option>
                                 <option value="00">00</option>
                                 <option value="05">05</option>
@@ -357,6 +356,12 @@
                                 <option value="55">55</option>
                               </select>
                             </div>
+                        </div>
+                        <div class="container m-2 d-flex justify-content-center">
+                            <p class="h5">Choose the date</p> 
+                            <form>
+                                <input type="date" id="chosen-date-reserve" name="datemin" min="">
+                            </form>
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
@@ -404,6 +409,7 @@
             var carInfoContent = sessionStorage.getItem('currentRidePopUp');
             var reserveCarInfo = document.getElementsByClassName('carInfoReserve')[0];
             reserveCarInfo.innerHTML = carInfoContent;
+            document.getElementById('chosen-date-reserve').min = new Date().toLocaleDateString('en-ca')
         }
 
         function handleRentCar(){

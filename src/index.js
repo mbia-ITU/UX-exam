@@ -41,6 +41,7 @@ function signOutUser() {
         document.getElementsByClassName('currentRideInfo')[0].innerHTML = `<h3>You do not have any current ride </h3>`;
         document.getElementsByClassName('previous-rides')[0].innerHTML = "<h5>Please log-in to see your previous rides or end a ride</h5>";
         document.getElementsByClassName('reserved-container')[0].setAttribute('hidden', 'true')
+        document.getElementsByClassName('reserved-rides')[0].innerHTML = "";
     }
     else if (document.getElementsByClassName('profile-tag')[0]){
         document.getElementById('inputName').removeAttribute('value');
@@ -48,7 +49,7 @@ function signOutUser() {
         document.getElementById('inputPhone').removeAttribute('value');
         document.getElementsByClassName('card-information-column')[0].setAttribute('hidden', 'true');
         document.getElementsByClassName('save-button')[0].setAttribute('hidden', 'true');
-        document.getElementsByClassName('reserved-rides')[0].innerHTML = "";
+ 
     }
 }
 
@@ -431,8 +432,8 @@ function addCardClicked(){
     var cardContainer = document.createElement('div');
     cardContainer.classList.add('w-100')
     cardContainer.classList.add('d-flex')
-    cardContainer.classList.add('align-content-center')
-    cardContainer.classList.add('flex-row')            
+    cardContainer.classList.add('flex-column')          
+    cardContainer.classList.add('flex-md-row')          
     var cardContent = `
         <div class="credit-card ${selectedType} selectable">
             <div hidden class="card-number">${cardNumber}
@@ -492,19 +493,18 @@ function loadCards(){
             var cardContainer = document.createElement('div');
             cardContainer.classList.add('w-100')
             cardContainer.classList.add('d-flex')
-            cardContainer.classList.add('align-content-center')
             cardContainer.classList.add('flex-column')          
-            cardContainer.classList.add('flex-md-row')  
+            cardContainer.classList.add('flex-md-row')          
             var cardContent = `
-                <div class="credit-card ${cards[i].selectedType} selectable">                    
+                <div class="credit-card ${cards[i].selectedType} selectable">
                     <div hidden class="card-number">${cards[i].cardNumber}
                     </div>
-                    <p class="credit-card-last4">
+                    <div class="credit-card-last4">
                         ${last4}
-                    </p>
-                    <p class="credit-card-expiry">
+                    </div>
+                    <div class="credit-card-expiry">
                         ${expire}
-                    </p>
+                    </div>
                 </div>
                 <div class="d-flex align-items-center">
                     <button class="btn btn-danger button-remove-card" type="button">Remove</button>

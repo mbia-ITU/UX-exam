@@ -33,7 +33,7 @@ $navbar-light-toggler-border-color: white;
 
 html,
 body {
-    font-family: 'Roboto', 'Helvetica', sans-serif;
+    font-family: "PT Mono", Helvetica, sans-serif;
 }
 
 .navbar-brand .material-icons {
@@ -83,6 +83,8 @@ section {
 
 .credit-card {
     margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
     border-radius: 7px;
     width: 95%;
     max-width: 250px;
@@ -90,7 +92,7 @@ section {
     transition: all 0.4s ease;
     box-shadow: 0 2px 4px 0 #cfd7df;
     min-height: 60px;
-    min-width: 100px;
+    padding: 13px;
     background: #1a1b1c;
     color: #efefef;
 }
@@ -103,17 +105,12 @@ section {
 
 /*  NUMBER FORMATTING */
 
-.credit-card-last4 {
-    font-family: "PT Mono", Helvetica, sans-serif;
-}
-
 .credit-card-last4:before {
     content: "**** **** **** ";
     color: #4f4d4d;
 }
 
 .credit-card-expiry {
-    font-family: "PT Mono", Helvetica, sans-serif;
     position: absolute;
     bottom: 8px;
     left: 15px;

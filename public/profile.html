@@ -144,6 +144,11 @@
                                 <input type="text" class="form-control" id="inputPhone">
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <p>Current balance: 0kr.-</p>
+                            <button class="btn btn-secondary updateBalanceButton" type="button" data-bs-toggle="modal" data-bs-target="#updateBalanceModal">Update balance</button> 
+                        </div>
+                        
                     </form>
                     <div>
                         <button class="btn btn-secondary save-button">Save</button>
@@ -160,6 +165,38 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal" id="updateBalanceModal" tabindex="-1" aria-hidden="true" aria-labelledby="updateBalanceLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateBalanceLabel">Update Balance</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <h4>Choose which of your saved cards and the amount</h4>
+                            </div>
+                            <div class="col">
+                                <div class="container d-flex align-items-center flex-column me-5 border w-100">
+                                    <form>
+                                        <div class="group group-saved-creditcards d-flex align-items-center flex-column w-100">
+                                        
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-evenly">
+                        <button type="button" class="btn btn btnNotConfirm" data-bs-dismiss="modal">Back</button>
+                        <a class="btn btn-secondary btnConfirmCancelReserve" data-bs-dismiss="modal" role="button">Update balance</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <div class="modal" id="addCard" tabindex="-1" aria-hidden="true" aria-labelledby="addCardLabel">
             <div class="modal-dialog">
@@ -238,7 +275,6 @@
                                           MasterCard
                                         </label>
                                       </div>
-                        
                                   </form>
                                 </div>
                               </div>

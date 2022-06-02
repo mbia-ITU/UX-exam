@@ -280,7 +280,7 @@
         </div>
 
 
-        <div class="modal" tabindex="-1" id="confirmCarRentModal" aria-labelledby="confirmCarREntLabel" aria-hidden="true">
+        <div class="modal confirmCarRentModal" tabindex="-1" id="confirmCarRentModal" aria-labelledby="confirmCarRentLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -409,7 +409,7 @@
             var carInfoContent = sessionStorage.getItem('currentRidePopUp');
             var reserveCarInfo = document.getElementsByClassName('carInfoReserve')[0];
             reserveCarInfo.innerHTML = carInfoContent;
-            document.getElementById('chosen-date-reserve').min = new Date().toLocaleDateString('en-ca')
+            document.getElementById('chosen-date-reserve').min = new Date().toLocaleDateString('en-ca');
         }
 
         function handleRentCar(){

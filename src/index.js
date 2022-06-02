@@ -102,12 +102,15 @@ function authStateObserver(user) {
         if (userPhone == null){
             userPhone = "12345678"
         }
-        if (sessionStorage.getItem(getUserID()) == null){
+        if (JSON.parse(sessionStorage.getItem(getUserID())) == null){
             var userCurrent = {UserName: userName, Email: userEmail, phone: userPhone, cards: [] , userHistory: [], currentRide: "", reservedCars: []}
             sessionStorage.setItem(getUserID(), JSON.stringify(userCurrent))
         } 
         initHistory()
         initProfile()
+        if (document.getElementsByClassName('activeHome')[0]){
+            checkIfCurrentIsEmpty(document.getElementById('confirmCarRentModal'));
+        }
 
     } else {
         // User is signed out!
@@ -249,6 +252,7 @@ function initHistory(){
             }
             addEventListenerModal(document.getElementById('confirmEndRideModal'));
             document.getElementsByClassName('btnConfirmStartNow')[0].addEventListener('click', handleStartNowClicked);
+            checkIfCurrentIsEmpty(document.getElementById('confirmRentModal'));
         }
     }
 }
@@ -261,6 +265,7 @@ function initProfile(){
         document.getElementById('inputPhone').setAttribute('value', user.phone)
         document.getElementsByClassName('addCardConfirm')[0].addEventListener('click', addCardClicked)
         document.getElementsByClassName('save-button')[0].addEventListener('click', saveButtonClicked)
+        document.getElementsByClassName('updateBalanceButton')[0].addEventListener('click', handleUpdateBalance)
         if (user.cards != []){
             loadCards()
         }
@@ -475,7 +480,6 @@ function removeCard(event){
     }
     container.remove();
     sessionStorage.setItem(getUserID(), JSON.stringify(user));
-
 }
 
 function loadCards(){
@@ -508,6 +512,32 @@ function loadCards(){
             cardContainer.getElementsByClassName('button-remove-card')[0].addEventListener('click', removeCard)
         
     }
+}
+
+function handleUpdateBalance(){
+    var user = JSON.parse(sessionStorage.getItem(getUserID()));
+    var cards = user.cards
+    document.getElementsByClassName('group-saved-creditcards')[0].innerHTML = '';
+    if (cards != null){
+        for (var i = 0; i < cards.length; i++) {
+            var last4 = cards[i].cardNumber.slice(cards[i].cardNumber.length - 4);
+            var cardContainer = document.createElement('label');  
+            cardContainer.classList.add('flex-row') 
+            cardContainer.classList.add('d-flex') 
+            cardContainer.classList.add('border-bottom')   
+            cardContainer.classList.add('mb-3')      
+            var cardContent =  `
+                    <span><input type="radio" name="payment-source"></span>
+                    <div id="saved-card">**** **** **** ${last4}</div>`
+            cardContainer.innerHTML = cardContent;
+            document.getElementsByClassName('group-saved-creditcards')[0].append(cardContainer)
+        } 
+    } else {
+        document.getElementsByClassName('group-saved-creditcards')[0].innerHTML = `
+        <h5>You do not currently have any saved credit cards saved</h5>
+        <h6>Please go to your profile and add a card</h6>`
+    }
+   
 }
 
 function handleConfirmRent(event){
@@ -575,15 +605,16 @@ function checkTime(i) {
 
 function handleConfirmReserve(event){
     var button = event.target;
-    var carInfo = button.parentElement;
-    var pictureUrl = carInfo.getElementsByClassName('picture-Url')[0].src;
-    var carBrand = carInfo.getElementsByClassName('car-brand')[0].innerText;
-    var carPlate = carInfo.getElementsByClassName('car-plate')[0].innerText;
-    var carPrice = carInfo.getElementsByClassName('car-price')[0].innerText;
+    var carInfoReserve = button.parentElement.parentElement;
+    var pictureUrl = carInfoReserve.getElementsByClassName('picture-Url')[0].src;
+    var carBrand = carInfoReserve.getElementsByClassName('car-brand')[0].innerText;
+    var carPlate = carInfoReserve.getElementsByClassName('car-plate')[0].innerText;
+    var carPrice = carInfoReserve.getElementsByClassName('car-price')[0].innerText;
+    var fuelLeft = carInfoReserve.getElementsByClassName('car-fuel-left')[0].innerText;
     var chosenDate = document.getElementById('chosen-date-reserve').value;
     var chosenHour = document.getElementById('chosen-hour-reserve').value;
     var chosenMin = document.getElementById('chosen-minute-reserve').value;
-    var car = {id: chosenDate + chosenHour + chosenMin, pictureUrl: pictureUrl, carBrand: carBrand, carPlate: carPlate, carPrice: carPrice, chosenDate: chosenDate, chosenHour: chosenHour, chosenMin: chosenMin}
+    var car = {pictureUrl: pictureUrl, carBrand: carBrand, carPlate: carPlate, carPrice: carPrice, chosenDate: chosenDate, chosenHour: chosenHour, chosenMin: chosenMin, fuelLeft: fuelLeft}
     var user = JSON.parse(sessionStorage.getItem(getUserID()));
     var reserved = user.reservedCars;
         if (reserved==null){
@@ -600,7 +631,6 @@ function handleConfirmReserve(event){
 }
 
 function createReservedCars(object){
-    console.log(object)
     var reservedRideContent = `
         <div class="card w-80">
             <div class="row g-0 d-flex align-items-center" >
@@ -612,7 +642,7 @@ function createReservedCars(object){
                             <h3 class="car-brand card-title" > <strong>${object.carBrand} </strong></h4>
                             <h5 class="car-plate card-text">${object.carPlate} </h5>  
                             <h4 class="card-text ride-date">Reserved time: ${object.chosenDate}-${object.chosenHour}:${object.chosenMin}</h5>
-                            <h6 id="timerRented" class="card-text timerRented"></h6>
+                            <h6 class="card-text car-fuel-left">${object.fuelLeft}</h6>
                             <h6 id="car-price" class="card-text car-price">Price: ${object.carPrice}</h6>
                     </div>
                 </div>
@@ -629,7 +659,49 @@ function createReservedCars(object){
         reservedCar.innerHTML = reservedRideContent;
         element.append(reservedCar);
         reservedCar.getElementsByClassName('cancelReservedbtn')[0].addEventListener('click', handleCancelClicked);
+        reservedCar.getElementsByClassName('startRidebtn')[0].addEventListener('click', handleConfirmRentStartNow);
 }
+
+function checkIfCurrentIsEmpty(modal){
+    var user = JSON.parse(sessionStorage.getItem(getUserID()));
+    var bool = true;
+        modal.addEventListener('show.bs.modal', function(event) {
+            if (user.currentRide != '') {
+                bool = false
+                alert('Please end your current ride before starting a new')
+                return event.preventDefault()
+            }
+        });
+}
+
+
+function handleConfirmRentStartNow(event){
+    if (JSON.parse(sessionStorage.getItem(getUserID())).currentRide == ''){
+        var button = event.target;
+        var carInfo = button.parentElement.parentElement;
+        var pictureUrl = carInfo.getElementsByClassName('picture-Url')[0].src;
+        var carBrand = carInfo.getElementsByClassName('car-brand')[0].innerText;
+        var fuelLeft = carInfo.getElementsByClassName('car-fuel-left')[0].innerText;
+        var carPlate = carInfo.getElementsByClassName('car-plate')[0].innerText;
+        var carPrice = carInfo.getElementsByClassName('car-price')[0].innerText;
+        var time = carInfo.getElementsByClassName('ride-date')[0].innerText;
+        var currentCarContent = `
+        <div class="d-flex align-items-center flex-column my-3">
+            <img src="${pictureUrl}" width="200" class="rounded picture-Url"/>
+            <h3 class="car-brand" > <strong>${carBrand} </strong></h4>
+            <h5 class="car-fuel-left"> ${fuelLeft}</h5>
+            <h5 class="car-plate">Plate: ${carPlate} </h5>
+            <h5 class="car-price">${carPrice}</h5> 
+            <h5 class="ride-date">${time}</h5>           
+        </div>
+        `;
+        var rentCarInfo = document.getElementsByClassName('confirmStartNowInfo')[0];
+        rentCarInfo.innerHTML = currentCarContent;
+        startNowElement.parentElement = carInfo;
+    }
+}
+
+var startNowElement
 
 function handleStartNowClicked(event){
     var button = event.target;
@@ -637,7 +709,8 @@ function handleStartNowClicked(event){
     var pictureUrl = carInfo.getElementsByClassName('picture-Url')[0].src;
     var carBrand = carInfo.getElementsByClassName('car-brand')[0].innerText;
     var carPlate = carInfo.getElementsByClassName('car-plate')[0].innerText;
-    var carPrice = carInfo.getElementsByClassName('car-price')[0].innerText;
+    var carPrice = carInfo.getElementsByClassName('car-price')[0].innerText.replace('Price: ', '' ).replace('%', '').replace('l', '');
+    var time = carInfo.getElementsByClassName('ride-date')[0].innerText;
     const currentDate = new Date()
     var timeDate = currentDate.getDate() + "/" + (currentDate.getMonth() + 1) + " " + checkTime(currentDate.getHours()) + ":" + checkTime(currentDate.getMinutes());
     var currentRideContent = `
@@ -662,50 +735,61 @@ function handleStartNowClicked(event){
             </div>
         </div>
     `;
-    var user = JSON.parse(sessionStorage.getItem(getUserID()))
+    var user = JSON.parse(sessionStorage.getItem(getUserID()));
     user.currentRide = currentRideContent;
+    removeReservedCar(" ", time);
     sessionStorage.setItem(getUserID(), JSON.stringify(user));
     var startTimeCar = Math.floor(Date.now() / 1000);
     sessionStorage.setItem('startTime', startTimeCar);
-    loadCurrentRide()
+    carInfo.parentElement.remove();
+    loadCurrentRide();
 }
 
 function handleCancelClicked(event){
     var button = event.target;
-    var parent = button.parentElement;
+    var parent = button.parentElement.parentElement;
     var pictureUrl = parent.getElementsByClassName('picture-Url')[0].src;
     var carBrand = parent.getElementsByClassName('car-brand')[0].innerText;
     var carPlate = parent.getElementsByClassName('car-plate')[0].innerText;
     var carPrice = parent.getElementsByClassName('car-price')[0].innerText;
-    var chosenDate = parent.getElementById('ride-date').value;
+    var chosenDate = parent.getElementsByClassName('ride-date')[0].innerText;
     var cancelContent = `
     <div class="d-flex align-items-center flex-column my-3">
         <img src="${pictureUrl}" width="200" class="rounded picture-Url"/>
         <h3 class="car-brand" > <strong>${carBrand} </strong></h4>
-        <h5 class="ride-date"> ${chosenDate} left</h5>
+        <h5 class="ride-date"> ${chosenDate}</h5>
         <h5 class="car-plate">Plate: ${carPlate} </h5>
-        <h5 class="car-price">${carPrice} kr.-/min</h5>            
+        <h5 class="car-price">${carPrice}</h5>            
     </div>
     `;
+    cancelElement = button.parentElement.parentElement;
     document.getElementsByClassName('cancelReservedInfo')[0].innerHTML = cancelContent;
-    document.getElementsByClassName('btnConfirmCancelReserve')[0].addEventListener('click', handleCancelClickedConfirm)
+    document.getElementsByClassName('btnConfirmCancelReserve')[0].addEventListener('click', removeReservedCar);
 }
+var cancelElement 
 
-function handleCancelClickedConfirm(event){
-    var button = event.target;
-    var container = button.parentElement.parentElement;
+function removeReservedCar(event, carId){
     var user = JSON.parse(sessionStorage.getItem(getUserID()))
     var reserved = user.reservedCars;
-    var cancelId = container.getElementsByClassName('chosen-date-reserve').value + document.getElementById('chosen-hour-reserve').value + document.getElementById('chosen-minute-reserve').value;
+    if (carId == null){
+        var button = event.target;
+        var container = button.parentElement.parentElement;
+        var cancelId = container.getElementsByClassName('ride-date')[0].innerText.replace('Reserved time: ', '').replaceAll(':', '').replaceAll('-', '');
+    }else {
+        var cancelId =  toString(carId).replace('Reserved time: ', '').replaceAll(':', '').replaceAll('-', '');
+        cancelElement = startNowElement;
+    }
+    
     for(var i = 0; i < reserved.length; i++){
-        var car = reserved[i]
-        var currentId = car.reserved[i].id;
+        var car = reserved[i];
+        var currentId = (car.chosenDate + "" + car.chosenHour + "" + car.chosenMin).replaceAll('-', '');
+        console.log(currentId + " " + cancelId)
         if (parseInt(currentId) == parseInt(cancelId)) {
             reserved.splice(i, 1);
             user.reservedCars = reserved;
         }
     }
-    container.remove();
+    cancelElement.remove();
     sessionStorage.setItem(getUserID(), JSON.stringify(user));
 }
 

@@ -208,7 +208,7 @@
             </div>
         </div>
 
-        <div class="modal" tabindex="-1" id="confirmCarRentModal" aria-labelledby="confirmCarREntLabel" aria-hidden="true">
+        <div class="modal" tabindex="-1" id="confirmRentModal" aria-labelledby="confirmCarRentLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -216,12 +216,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body d-flex align-items-center flex-column">
-                        <div class="container carInfoRent"></div>
                         <p>The timer will start when you confirm</p>
+                        <div class="container confirmStartNowInfo"></div>
+                        
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
                         <button type="button" class="btn btn btnNotConfirm" data-bs-dismiss="modal">Nope.</button>
-                        <button type="button" class="btn btn-secondary btnConfirmStartNow">Yup!</a>
+                        <button type="button" class="btn btn-secondary btnConfirmStartNow" data-bs-dismiss="modal">Yup!</a>
                     </div>
                 </div>
             </div>

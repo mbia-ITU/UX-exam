@@ -90,6 +90,7 @@ section {
     transition: all 0.4s ease;
     box-shadow: 0 2px 4px 0 #cfd7df;
     min-height: 60px;
+    min-width: 100px;
     background: #1a1b1c;
     color: #efefef;
 }
@@ -104,18 +105,15 @@ section {
 
 .credit-card-last4 {
     font-family: "PT Mono", Helvetica, sans-serif;
-    font-size: 18px;
 }
 
 .credit-card-last4:before {
     content: "**** **** **** ";
     color: #4f4d4d;
-    font-size: 18px;
 }
 
 .credit-card-expiry {
     font-family: "PT Mono", Helvetica, sans-serif;
-    font-size: 18px;
     position: absolute;
     bottom: 8px;
     left: 15px;

@@ -266,6 +266,7 @@ function initProfile(){
         document.getElementsByClassName('addCardConfirm')[0].addEventListener('click', addCardClicked)
         document.getElementsByClassName('save-button')[0].addEventListener('click', saveButtonClicked)
         document.getElementsByClassName('updateBalanceButton')[0].addEventListener('click', handleUpdateBalance)
+        document.getElementsByClassName('card-information-column')[0].removeAttribute('hidden')
         if (user.cards != []){
             loadCards()
         }
@@ -492,17 +493,18 @@ function loadCards(){
             cardContainer.classList.add('w-100')
             cardContainer.classList.add('d-flex')
             cardContainer.classList.add('align-content-center')
-            cardContainer.classList.add('flex-row')            
+            cardContainer.classList.add('flex-column')          
+            cardContainer.classList.add('flex-md-row')  
             var cardContent = `
                 <div class="credit-card ${cards[i].selectedType} selectable">                    
                     <div hidden class="card-number">${cards[i].cardNumber}
                     </div>
-                    <div class="credit-card-last4">
+                    <p class="credit-card-last4">
                         ${last4}
-                    </div>
-                    <div class="credit-card-expiry">
+                    </p>
+                    <p class="credit-card-expiry">
                         ${expire}
-                    </div>
+                    </p>
                 </div>
                 <div class="d-flex align-items-center">
                     <button class="btn btn-danger button-remove-card" type="button">Remove</button>

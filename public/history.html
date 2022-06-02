@@ -101,12 +101,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <button type="button" hidden id="sign-out" class="btn btn-outline-primary buttonSignInOut">
+                            <button type="button" hidden id="sign-out" class="btn btn-outline-primary buttonSignInOut rounded-3 shadow-sm">
                                     <strong>Sign-out</strong>
                                 </button>
                         </li>
                         <li class="nav-item">
-                            <button type="button" id="sign-in" class="btn btn-outline-primary buttonSignInOut">
+                            <button type="button" id="sign-in" class="btn btn-outline-primary buttonSignInOut rounded-3 shadow-sm">
                                 <div class="d-flex align-items-center d-flex justify-content-evenly">
                                     <span class="material-icons px-1">account_circle</span>  
                                     <strong>Sign-in with Google</strong>             
@@ -136,7 +136,7 @@
                 </div>
                 <div class="container py-4 reserved-container" hidden>
                     <div class="row">
-                        <p class="h2">Reserved cars:</p>
+                        <p class="h2 mb-3">Reserved cars:</p>
                         <div class="reserved-rides">
                         </div>
                     </div>
@@ -156,18 +156,23 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Are you sure you want to end the ride now?</h5>
+                        <h5 class="modal-title">End Ride</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body d-flex align-items-center">
-                        <div class="ride-info">
+                    <div class="modal-body">
+                        <div class="text-center mb-2">
+                            <h5>Are you sure you want to end the ride now?</h5>
+                        </div>
+                        <div class="end-ride-info">
                             
                         </div>
-                        <p>The timer will stop when you confirm</p>
+                        <div class="text-center mb-4">
+                            <p>The timer will stop when you confirm</p>
+                        </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
-                        <button type="button" class="btn btnNotConfirm" data-bs-dismiss="modal">Nope.</button>
-                        <button type="button" class="btn btn-secondary btnConfirm" id="btnConfirmEndedRide" data-bs-toggle="modal" data-bs-target="#viewRecieptModal">Yup!</button>
+                        <button type="button" class="btn btnNotConfirm rounded-3 shadow-sm btn-lg" data-bs-dismiss="modal">Nope.</button>
+                        <button type="button" class="btn btn-secondary btnConfirm rounded-3 shadow-sm btn-lg" id="btnConfirmEndedRide" data-bs-toggle="modal" data-bs-target="#viewRecieptModal">Yup!</button>
                     </div>
                 </div>
             </div>
@@ -196,13 +201,15 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <h3>Are you sure you want to cancel this reservation?</h3>
+                        <div class="text-center">
+                            <h3>Are you sure you want to cancel this reservation?</h3>
+                        </div>
                         <div class="container d-flex align-items-center flex-column cancelReservedInfo">
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
-                        <button type="button" class="btn btn btnNotConfirm" data-bs-dismiss="modal">Nope.</button>
-                        <a class="btn btn-secondary btnConfirmCancelReserve" data-bs-dismiss="modal" role="button">Yup!</a>
+                        <button type="button" class="btn btn btnNotConfirm rounded-3 shadow-sm btn-lg" data-bs-dismiss="modal">Nope.</button>
+                        <a class="btn btn-secondary btnConfirmCancelReserve rounded-3 shadow-sm btn-lg" data-bs-dismiss="modal" role="button">Yup!</a>
                     </div>
                 </div>
             </div>
@@ -221,35 +228,35 @@
                         
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
-                        <button type="button" class="btn btn btnNotConfirm" data-bs-dismiss="modal">Nope.</button>
-                        <button type="button" class="btn btn-secondary btnConfirmStartNow" data-bs-dismiss="modal">Yup!</a>
+                        <button type="button" class="btn btn btnNotConfirm rounded-3 shadow-sm btn-lg" data-bs-dismiss="modal">Nope.</button>
+                        <button type="button" class="btn btn-secondary btnConfirmStartNow rounded-3 shadow-sm btn-lg" data-bs-dismiss="modal">Yup!</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <footer>
+        <footer class="mt-5 border-top">
             <section id="contact">
                 <div class="container">
-                    <p class="h1">Contact Us</p>
+                    <p class="h3">Contact Us</p>
                     <div class="d-flex align-items-center">
-                        <img src="https://img.icons8.com/ios-filled/50/000000/new-post.png" class="pe-2" />
-                        <p class="h4">CollabCar@CollabCar.dk</p>
+                        <img src="https://img.icons8.com/ios-filled/50/000000/new-post.png" class="pe-2" style="width:40px;" />
+                        <p class="h5">CollabCar@CollabCar.dk</p>
                     </div>
                     <div class="d-flex align-items-center">
                         <div class="nav-item pt-1">
                             <a href="#">
-                                <img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" />
+                                <img src="https://img.icons8.com/ios-filled/50/000000/facebook-new.png" style="width:40px;"/>
                             </a>
                         </div>
                         <div class="nav-item pt-1">
                             <a href="#">
-                                <img src="https://img.icons8.com/ios-filled/50/000000/twitter-circled--v1.png" href="#" />
+                                <img src="https://img.icons8.com/ios-filled/50/000000/twitter-circled--v1.png" style="width:40px;"/>
                             </a>
                         </div>
                         <div class="nav-item pt-1">
                             <a href="#">
-                                <img src="https://img.icons8.com/ios-filled/50/000000/instagram-new--v1.png" href="#" />
+                                <img src="https://img.icons8.com/ios-filled/50/000000/instagram-new--v1.png" style="width:40px;" />
                             </a>
                         </div>
                     </div>

@@ -63,22 +63,42 @@ section {
     border-color: $secondary;
 }
 
-.blueBottons, .btnNotConfirm,
-.btnConfirmRent, .btnConfirmReserve, .okButton {
-    width: 200px;
-}
-
-.blueBottons:hover, .btnNotConfirm:hover,
-.btnConfirmRent:hover,.btnConfirmReserve:hover , .okButton:hover{
-    background-color: lighten($color: $secondary, $amount: 10%);
-    border-color: lighten($color: $secondary, $amount: 10%);
+.btnNotConfirm:hover{
+    background-color: lighten($color: rgb(113, 113, 113), $amount: 10%);
+    border-color: lighten($color: rgb(113, 113, 113), $amount: 10%);
+    color: white;
 }
 
 .btnNotConfirm {
     background-color: rgb(113, 113, 113);
+    color: white;
+    width: 130px;
 }
 .btn-secondary {
     color: white;
+    width: 130px;
+}
+
+.btn-danger {
+    width: 130px;
+}
+
+.btn-primary {
+    width: 130px;
+}
+.btn-primary:hover {
+    background-color: lighten($color: $primary, $amount: 10%);
+    border-color: lighten($color: $primary, $amount: 10%);
+}
+
+.btn-secondary:hover {
+    background-color: lighten($color: $secondary, $amount: 10%);
+    border-color: lighten($color: $secondary, $amount: 10%);
+    color: white;
+}
+
+.blueBottons {
+    width: 200px;
 }
 
 .credit-card {

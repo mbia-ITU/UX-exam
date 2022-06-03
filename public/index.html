@@ -303,7 +303,7 @@
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
                         <button type="button" class="btn btn btnNotConfirm rounded-pill shadow-sm" data-bs-dismiss="modal">Nope.</button>
-                        <a class="btn btn-secondary btnConfirmRent rounded-pill shadow-sm" href="history.html" role="button" onclick="removeCurrentCar()">Yup!</a>
+                        <a class="btn btn-secondary btnConfirmRent rounded-pill shadow-sm" href="history.html" role="button">Yup!</a>
                     </div>
                 </div>
             </div>
@@ -378,7 +378,7 @@
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
                         <button type="button" class="btn btn btnNotConfirm rounded-pill shadow-sm" data-bs-dismiss="modal">Cancel</button>
-                        <a class="btn btn-secondary btnConfirmReserve rounded-pill shadow-sm" href="history.html" role="button" onclick="removeCurrentCar()">Reserve car!</a>
+                        <a class="btn btn-secondary btnConfirmReserve rounded-pill shadow-sm" href="history.html" role="button">Reserve car!</a>
                     </div>
                 </div>
             </div>
@@ -416,26 +416,6 @@
 
 
     </main>
-
-    <script> 
-        function handleReserveCar(){
-            var carInfoContent = sessionStorage.getItem('currentRidePopUp');
-            var reserveCarInfo = document.getElementsByClassName('carInfoReserve')[0];
-            reserveCarInfo.innerHTML = carInfoContent;
-            document.getElementById('chosen-date-reserve').min = new Date().toLocaleDateString('en-ca');
-        }
-
-        function handleRentCar(){
-            var carInfoContent = sessionStorage.getItem('currentRidePopUp');
-            var rentCarInfo = document.getElementsByClassName('carInfoRent')[0];
-            rentCarInfo.innerHTML = carInfoContent;
-        }
-        
-        function removeCurrentCar(){
-            sessionStorage.setItem('currentRidePopUp', null);
-        }
-
-    </script>
 
     <!-- This script is created by webpack -->
     <script src="scripts/main.js"></script>

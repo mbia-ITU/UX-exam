@@ -181,52 +181,114 @@ function carMarkers(map) {
         var popUpContent = `
         <div class="d-flex align-items-center flex-column my-3 carInfoMarker">
             <img src="${cars[key].pictureUrl}" width="200" class="rounded picture-Url-popup"/>
-            <h3 class="car-plate-popup" > <strong>${cars[key].plate} </strong></h4>
+            <h3 class="car-plate-popup" > <strong>Plate: ${cars[key].plate} </strong></h4>
             <h5 class="car-fuel-left-popup"> ${cars[key].fuelLeft} left </h5>
-            <h5 class="car-brand-popup"> Plate: ${cars[key].carBrand} </h5>
+            <h5 class="car-brand-popup">${cars[key].carBrand} </h5>
             <h5 class="car-price-popup"> ${cars[key].price} kr.-/min </h5>
-            <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rentCar rounded-pill shadow-sm" onclick="handleRentCar()" data-bs-toggle="modal" data-bs-target="#confirmCarRentModal">Rent Car</button>
-            <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 reserveCar rounded-pill shadow-sm" onclick="handleReserveCar()" data-bs-toggle="modal" data-bs-target="#confirmCarReserveModal">Reserve Car</button>
+            <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rentCar rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#confirmCarRentModal">Rent Car</button>
+            <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 reserveCar rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#confirmCarReserveModal">Reserve Car</button>
         </div>
         `;
-        cars[key].marker = L.marker([cars[key].lat, cars[key].lon], { icon: iconCar }).addTo(map).bindPopup(popUpContent).on('click', saveCurrentCar(key));
+        cars[key].marker = L.marker([cars[key].lat, cars[key].lon], { icon: iconCar }).addTo(map).bindPopup(popUpContent).on('click', openPopUp);
     }
 }
 
-function saveCurrentCar(key){
-    var currentCarContent = `
-    <div class="card w-80 my-3 border-0" >
+function openPopUp(){
+    document.getElementsByClassName('rentCar')[0].addEventListener('click', handleRentCar);
+    document.getElementsByClassName('reserveCar')[0].addEventListener('click', handleReserveCar);
+    
+}
+
+function handleReserveCar(){
+    var reserveCarInfo = document.getElementsByClassName('carInfoReserve')[0];
+    var pictureUrl = document.getElementsByClassName('picture-Url-popup')[0].src
+    var carPlate = document.getElementsByClassName('car-plate-popup')[0].innerText
+    var fuelLeft = document.getElementsByClassName('car-fuel-left-popup')[0].innerText
+    var carBrand = document.getElementsByClassName('car-brand-popup')[0].innerText
+    var carPrice = document.getElementsByClassName('car-price-popup')[0].innerText
+    reserveCarInfo.innerHTML = `
+    <div class="card w-80 my-3 border-0">
             <div class="row d-flex align-items-center flex-row g-0">
                 <div class="col-md-6 d-flex justify-content-center justify-content-lg-start">
-                    <img src="${cars[key].pictureUrl}" class="img-fluid rounded-start picture-Url" style="height: 10rem;"/>
+                    <img src="${pictureUrl}" class="img-fluid rounded-start picture-Url" style="height: 10rem;"/>
                 </div>
                 <div class="col-md-6">
                     <div class="card-body">
-                        <h3 class="car-brand" > <strong>${cars[key].carBrand} </strong></h4>
-                        <h5 class="car-fuel-left"> ${cars[key].fuelLeft} left</h5>
-                        <h5 class="car-plate">Plate: ${cars[key].plate} </h5>
-                        <h5 class="car-price">${cars[key].price} kr.-/min</h5>      
+                        <h3 class="car-fuel-left" ><strong>${carPlate} </strong></h4>
+                        <h5 class="car-brand"> ${carBrand}</h5>
+                        <h5 class="car-plate">${fuelLeft} </h5>
+                        <h5 class="car-price">${carPrice}</h5>      
                     </div>
                 </div>                    
             </div>
         </div>
     `;
-    sessionStorage.setItem('currentRidePopUp', currentCarContent);
+    document.getElementById('chosen-date-reserve').min = new Date().toLocaleDateString('en-ca');
+}
+
+function handleRentCar(){
+    var rentCarInfo = document.getElementsByClassName('carInfoRent')[0];
+    var pictureUrl = document.getElementsByClassName('picture-Url-popup')[0].src
+    var carPlate = document.getElementsByClassName('car-plate-popup')[0].innerText
+    var fuelLeft = document.getElementsByClassName('car-fuel-left-popup')[0].innerText
+    var carBrand = document.getElementsByClassName('car-brand-popup')[0].innerText
+    var carPrice = document.getElementsByClassName('car-price-popup')[0].innerText
+
+    rentCarInfo.innerHTML = `
+    <div class="card w-80 my-3 border-0">
+            <div class="row d-flex align-items-center flex-row g-0">
+                <div class="col-md-6 d-flex justify-content-center justify-content-lg-start">
+                    <img src="${pictureUrl}" class="img-fluid rounded-start picture-Url" style="height: 10rem;"/>
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h3 class="car-fuel-left" ><strong>${carPlate} </strong></h4>
+                        <h5 class="car-brand"> ${carBrand}</h5>
+                        <h5 class="car-plate">${fuelLeft} </h5>
+                        <h5 class="car-price">${carPrice}</h5>      
+                    </div>
+                </div>                    
+            </div>
+        </div>
+    `;
 }
 
 var cars = {
     car1: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '54% battery', plate: 'AB 12345', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.66006357924885', lon: '12.591008245588563', marker: '' },
     car2: { carBrand: 'Renault Zoe', fuelType: 'Benzin', fuelLeft: '21 L', plate: 'QD 21435', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.657880', lon: '12.593162', marker:''},
     car3: { carBrand: 'Renault Zoe', fuelType: 'Benzin', fuelLeft: '32 L', plate: 'XD 87695', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.662045', lon: '12.592516', marker: ''},
-    car4: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '43% battery', plate: 'CD 54321', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.661837', lon: '12.600712', marker:''}
+    car4: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '43% battery', plate: 'CD 54321', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.661837', lon: '12.600712', marker:''},
+    car5: { carBrand: 'Renault Zoe', fuelType: 'Benzin', fuelLeft: '10 L', plate: 'FH 54321', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.682406', lon: '12.526697', marker:''},
+    car6: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '50% battery', plate: 'SF 54321', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.69581767760228', lon: '12.56953104032246', marker:''},
+    car7: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '80% battery', plate: 'JK 54321', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.702419746125706', lon: '12.55806952100423', marker:''},
+    car8: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '21% battery', plate: 'SA 54321', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.65908977855216', lon: '12.615060442998073', marker:''}
 }
 
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(initMap);
+        navigator.geolocation.getCurrentPosition(initMap, showError);
     } else {
         alert("Could not get get location");
     }
+}
+
+function showError(error) {
+    switch(error.code) {
+      case error.PERMISSION_DENIED:
+       console.log("User denied the request for Geolocation.")
+        break;
+      case error.POSITION_UNAVAILABLE:
+        console.log("Location information is unavailable.")
+        break;
+      case error.TIMEOUT:
+        console.log("The request to get user location timed out.")
+        break;
+      case error.UNKNOWN_ERROR:
+        console.log("An unknown error occurred.")
+        break;
+    }
+    var coords = {latitude: 55.65907282137402,longitude: 12.590892066064018}
+    initMap({coords:coords})
 }
 
 window.onload = function() {

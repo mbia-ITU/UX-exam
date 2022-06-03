@@ -1232,7 +1232,6 @@ function handleEndRide(){
 }
 
 function createPreviousRidesContent(object){
-    document.getElementsByClassName()
     var totalInt = object.carTotal.replace('kr.-', '').replace('Total: ', '');
     var priceInt = object.carPrice.replace('kr.-/min', '').replace('Price: ', '');
     var minutes = Math.floor(totalInt/priceInt);

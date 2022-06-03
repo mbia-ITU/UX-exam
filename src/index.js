@@ -181,12 +181,12 @@ function carMarkers(map) {
         var popUpContent = `
         <div class="d-flex align-items-center flex-column my-3 carInfoMarker">
             <img src="${cars[key].pictureUrl}" width="200" class="rounded picture-Url-popup"/>
-            <h3 class="car-brand-popup" > <strong>${cars[key].carBrand} </strong></h4>
+            <h3 class="car-plate-popup" > <strong>${cars[key].plate} </strong></h4>
             <h5 class="car-fuel-left-popup"> ${cars[key].fuelLeft} left </h5>
-            <h5 class="car-plate-popup"> Plate: ${cars[key].plate} </h5>
+            <h5 class="car-brand-popup"> Plate: ${cars[key].carBrand} </h5>
             <h5 class="car-price-popup"> ${cars[key].price} kr.-/min </h5>
-            <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rentCar rounded-3 shadow-sm" onclick="handleRentCar()" data-bs-toggle="modal" data-bs-target="#confirmCarRentModal">Rent Car</button>
-            <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 reserveCar rounded-3 shadow-sm" onclick="handleReserveCar()" data-bs-toggle="modal" data-bs-target="#confirmCarReserveModal">Reserve Car</button>
+            <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 rentCar rounded-pill shadow-sm" onclick="handleRentCar()" data-bs-toggle="modal" data-bs-target="#confirmCarRentModal">Rent Car</button>
+            <button type="button" class="btn btn-secondary btn-lg blueBottons m-1 reserveCar rounded-pill shadow-sm" onclick="handleReserveCar()" data-bs-toggle="modal" data-bs-target="#confirmCarReserveModal">Reserve Car</button>
         </div>
         `;
         cars[key].marker = L.marker([cars[key].lat, cars[key].lon], { icon: iconCar }).addTo(map).bindPopup(popUpContent).on('click', saveCurrentCar(key));
@@ -195,13 +195,21 @@ function carMarkers(map) {
 
 function saveCurrentCar(key){
     var currentCarContent = `
-    <div class="d-flex align-items-center flex-column my-3">
-        <img src="${cars[key].pictureUrl}" width="200" class="rounded picture-Url"/>
-        <h3 class="car-brand" > <strong>${cars[key].carBrand} </strong></h4>
-        <h5 class="car-fuel-left"> ${cars[key].fuelLeft} left</h5>
-        <h5 class="car-plate">Plate: ${cars[key].plate} </h5>
-        <h5 class="car-price">${cars[key].price} kr.-/min</h5>            
-    </div>
+    <div class="card w-80 my-3 border-0" >
+            <div class="row d-flex align-items-center flex-row g-0">
+                <div class="col-md-6 d-flex justify-content-center justify-content-lg-start">
+                    <img src="${cars[key].pictureUrl}" class="img-fluid rounded-start picture-Url" style="height: 10rem;"/>
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h3 class="car-brand" > <strong>${cars[key].carBrand} </strong></h4>
+                        <h5 class="car-fuel-left"> ${cars[key].fuelLeft} left</h5>
+                        <h5 class="car-plate">Plate: ${cars[key].plate} </h5>
+                        <h5 class="car-price">${cars[key].price} kr.-/min</h5>      
+                    </div>
+                </div>                    
+            </div>
+        </div>
     `;
     sessionStorage.setItem('currentRidePopUp', currentCarContent);
 }
@@ -254,6 +262,8 @@ function initHistory(){
             addEventListenerModal(document.getElementById('confirmEndRideModal'));
             document.getElementsByClassName('btnConfirmStartNow')[0].addEventListener('click', handleStartNowClicked);
             checkIfCurrentIsEmpty(document.getElementById('confirmRentModal'));
+            document.getElementsByClassName('edit-reservation-btn')[0].addEventListener('click', handleEditReservation);
+            document.getElementsByClassName('save-button')[0].addEventListener('click', handleSaveClickedReservation)
         }
     }
 }
@@ -261,6 +271,7 @@ function initHistory(){
 function initProfile(){
     if (document.getElementsByClassName('profile-tag')[0]){
         var user = JSON.parse(sessionStorage.getItem(getUserID()))
+        document.getElementsByClassName('welcomeUser')[0].innerText = `Hi ${user.UserName}!`;
         document.getElementById('inputName').setAttribute('value', user.UserName)
         document.getElementById('inputEmail').setAttribute('value', user.Email)
         document.getElementById('inputPhone').setAttribute('value', user.phone)
@@ -270,6 +281,7 @@ function initProfile(){
         document.getElementsByClassName('updateBalanceButton')[0].addEventListener('click', handleUpdateBalance)
         document.getElementsByClassName('updateBalanceConfirmed')[0].addEventListener('click', handleBalanceConfirmed)
         document.getElementsByClassName('card-information-column')[0].removeAttribute('hidden')
+        checkCards(updateBalanceModal)
         if (user.cards != []){
             loadCards()
         }
@@ -448,7 +460,7 @@ function addCardClicked(){
             </div>
         </div>
         <div class="d-flex align-items-center">
-            <button class="btn btn-danger button-remove-card rounded-3 shadow-sm" type="button">Remove</button>
+            <button class="btn btn-danger button-remove-card rounded-pill shadow-sm" type="button">Remove</button>
         </div>`
     cardContainer.innerHTML = cardContent;
     document.getElementsByClassName('card-information')[0].append(cardContainer)
@@ -508,7 +520,7 @@ function loadCards(){
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <button class="btn btn-danger button-remove-card rounded-3 shadow-sm" type="button">Remove</button>
+                    <button class="btn btn-danger button-remove-card rounded-pill shadow-sm" type="button">Remove</button>
                 </div>`
             cardContainer.innerHTML = cardContent;
             document.getElementsByClassName('card-information')[0].append(cardContainer)
@@ -527,8 +539,12 @@ function handleUpdateBalance(){
             var cardContainer = document.createElement('label');  
             cardContainer.classList.add('flex-row') 
             cardContainer.classList.add('d-flex') 
-            cardContainer.classList.add('border-bottom')   
-            cardContainer.classList.add('mb-3')      
+            cardContainer.classList.add('border')  
+            cardContainer.classList.add('shadow-sm')  
+            cardContainer.classList.add('rounded-pill')   
+            cardContainer.classList.add('mb-3')    
+            cardContainer.classList.add('py-3')   
+            cardContainer.classList.add('px-4')        
             var cardContent =  `
                     <span><input type="radio" name="payment-source"></span>
                     <div id="saved-card">**** **** **** ${last4}</div>`
@@ -537,10 +553,20 @@ function handleUpdateBalance(){
         } 
     } else {
         document.getElementsByClassName('group-saved-creditcards')[0].parentElement.parentElement.classList.remove('border')
-        document.getElementsByClassName('group-saved-creditcards')[0].innerHTML = `
-        <h5>You do not currently have any saved credit cards saved</h5>
-        <h6>Please go to your profile and add a card</h6>`
     }
+}
+
+function checkCards(modal){
+    var bool = true;
+        modal.addEventListener('show.bs.modal', function(event) {
+            var user = JSON.parse(sessionStorage.getItem(getUserID()));
+            if (user.cards.length == 0) {
+                bool = false
+                alert('Please add a card before updating your balance')
+                return event.preventDefault()
+                
+            }
+        });
 }
 
 function handleBalanceConfirmed(){
@@ -567,23 +593,23 @@ function handleConfirmRent(event){
     const currentDate = new Date()
     var timeDate = currentDate.getDate() + "/" + (currentDate.getMonth() + 1) + " " + checkTime(currentDate.getHours()) + ":" + checkTime(currentDate.getMinutes());
     var currentRideContent = `
-        <div class="card w-80" >
-            <div class="row d-flex align-items-center flex-row g-0">
+        <div class="card w-80 rounded-pill shadow-sm" >
+            <div class="row d-flex align-items-center flex-row g-0 me-4">
                 <div class="col-md-4">
-                    <img src="${pictureUrl}" class="img-fluid rounded-start picture-Url" style="height: 15rem;"/>
+                    <img src="${pictureUrl}" class="img-fluid rounded-pill picture-Url" style="height: 15rem;"/>
                 </div>
                 <div class="col-md-8">
                     <div class="card-body d-flex flex-row">
                         <div class="col-md-8">
-                            <h3 class="car-brand card-title" > <strong>${carBrand} </strong></h4>
-                            <h5 class="car-plate card-text">${carPlate} </h5>  
+                            <h3 class="car-plate card-title" > <strong>${carPlate} </strong></h4>
+                            <h5 class="car-brand card-text">${carBrand} </h5>  
                             <h4 class="card-text ride-date">${timeDate}</h5>
                             <h6 id="timerRented" class="card-text timerRented"></h6>
                             <h6 id="car-price-current" class="card-text car-price-current">Price: ${carPrice}</h6>
                             <h6 id="totalPriceCurrentRide" class="card-text totalPriceCurrentRide">Total: time*price</h6>
                         </div>
                         <div class="d-flex align-items-end flex-column justify-content-evenly col-md-4 ps-3">
-                            <button type="button" class="btn btn-primary float-end rounded-3 shadow-sm" id="endRidebtn" data-bs-toggle="modal" data-bs-target="#confirmEndRideModal">End ride</button>
+                            <button type="button" class="btn btn-primary float-end rounded-pill shadow-sm" id="endRidebtn" data-bs-toggle="modal" data-bs-target="#confirmEndRideModal">End ride</button>
                         </div>  
                     </div>
                 </div>                    
@@ -598,18 +624,22 @@ function handleConfirmRent(event){
 }
 
 function startTimeCounter() {
-    var now = Math.floor(Date.now() / 1000); // get the time now
+    var now = Math.floor(Date.now() / 1000); 
     var startTime = parseInt(sessionStorage.getItem('startTime'));
-    var diff = now - startTime; // diff in seconds between now and start
+    var diff = now - startTime; 
+
     var h = Math.floor((diff/60)/60);
     var m = Math.floor(diff / 60);
     var s = Math.floor(diff % 60);
+
     h = checkTime(h);
     m = checkTime(m);
     s = checkTime(s);
+
     var timerString = "Time: " + h + ":" + m + ":" + s;
-    document.getElementById("timerRented").innerHTML = timerString; // update the element 
-    var t = setTimeout(startTimeCounter, 500); // set a timeout to update the timer
+    document.getElementById("timerRented").innerHTML = timerString; 
+
+    var t = setTimeout(startTimeCounter, 1000);
     sessionStorage.setItem('timeout', t);
     var priceElement = document.getElementById('car-price-current');
     var price = priceElement.innerText.replace('kr.-/min', '');
@@ -618,8 +648,65 @@ function startTimeCounter() {
 }
 
 function checkTime(i) {
-    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    if (i < 10) {i = "0" + i}; 
     return i;
+}
+
+function startCountDown(element, object) {
+    var chosenDate = object.chosenDate;
+    chosenDate = new Date(chosenDate);
+    var chosenHour = object.chosenHour;
+    var chosenMin = object.chosenMin;
+    chosenDate.setHours(chosenDate.getHours() + chosenHour);
+    chosenDate.setMinutes(chosenDate.getMinutes() + chosenMin);
+    var x = setInterval(function() {
+        var countDownDate = chosenDate.getTime();
+        var now = new Date().getTime();
+        var diff = countDownDate - now;
+
+        var d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        var s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        d = checkTime(d);
+        h = checkTime(h);
+        m = checkTime(m);
+        s = checkTime(s);
+
+        element.getElementsByClassName('time-left-reserved')[0].innerHTML = `
+        <div class="col">
+            <h6>Time left:</h6>
+        </div> 
+        <div class="col">
+            <div class="row">
+                <h5 class="ms-2" style="word-spacing: 2.5em;">${d} ${h} ${m} ${s}</h5>
+                <h6 style="word-spacing: 1.25em;">days hours minutes seconds</h6>
+            </div>
+        </div>`;
+        if (viewDetailsElement){
+            document.getElementsByClassName('time-left-reserved-view')[0].innerHTML = `
+            <div class="col">
+                <h6>Time left:</h6>
+            </div> 
+            <div class="col">
+                <div class="row">
+                    <h5 class="ms-2" style="word-spacing: 2.5em;">${d} ${h} ${m} ${s}</h5>
+                    <h6 style="word-spacing: 1.25em;">days hours minutes seconds</h6>
+                </div>
+            </div>`
+            if (diff < 0) {
+                clearInterval(x);
+                document.getElementsByClassName('time-left-reserved-view')[0].innerHTML = "EXPIRED";
+            }
+            }
+        if (diff < 0) {
+            clearInterval(x);
+            element.getElementsByClassName('time-left-reserved')[0].innerHTML = "EXPIRED";
+        }
+    }, 1000);
+    sessionStorage.setItem('countDown', x)    
+
 }
 
 function handleConfirmReserve(event){
@@ -651,23 +738,28 @@ function handleConfirmReserve(event){
 
 function createReservedCars(object){
     var reservedRideContent = `
-        <div class="card w-80" >
-            <div class="row d-flex align-items-center flex-row g-0">
+        <div class="card w-80 rounded-pill shadow-sm" >
+            <div class="row d-flex align-items-center flex-row g-0 me-4">
                 <div class="col-lg-4 d-flex justify-content-center justify-content-lg-start">
-                    <img src="${object.pictureUrl}" class="img-fluid rounded-start picture-Url" style="height: 15rem;"/>
+                    <img src="${object.pictureUrl}" class="img-fluid rounded-pill picture-Url" style="height: 15rem;"/>
                 </div>
                 <div class="col-lg-8">
                     <div class="card-body d-flex flex-row">
                         <div class="col-md-8">
-                            <h3 class="car-brand card-title" > <strong>${object.carBrand} </strong></h4>
-                            <h5 class="car-plate card-text">${object.carPlate} </h5>  
-                            <h4 class="card-text ride-date">Reserved time: ${object.chosenDate}-${object.chosenHour}:${object.chosenMin}</h5>
-                            <h6 class="card-text car-fuel-left">${object.fuelLeft}</h6>
-                            <h6 id="car-price" class="card-text car-price">Price: ${object.carPrice}</h6>
+                            <h4 class="car-plate card-title"> <strong>${object.carPlate} </strong></h4>
+                            <h5 class="car-brand card-text" hidden>${object.carBrand} </h5>  
+                            <h5 class="card-text ride-date">Reserved time: ${object.chosenDate}-${object.chosenHour}:${object.chosenMin}</h5>
+                            <div class="time-left-reserved card-text">
+                                <h6>Time left:  00 00 00 00</h6> 
+                                <h6>days  hours  minutes  seconds </h6>
+                            </div>
+                            <h6 class="card-text car-fuel-left" hidden>${object.fuelLeft}</h6>
+                            <h6 id="car-price" class="card-text car-price" hidden>Price: ${object.carPrice}</h6>
                         </div>
-                        <div class="d-flex align-items-end flex-column justify-content-evenly col-md-4 ps-3">
-                            <button type="button" class="btn btn-secondary rounded-3 startRidebtn shadow-sm" data-bs-toggle="modal" data-bs-target="#confirmRentModal">Start ride now</button>
-                            <button type="button" class="btn btn-danger rounded-3 cancelReservedbtn shadow-sm" data-bs-toggle="modal" data-bs-target="#cancelReservedModal">Cancel</button>
+                        <div class="d-flex align-items-end flex-column justify-content-evenly col-md-4 ">
+                            <button type="button" class="btn btn-secondary rounded-pill startRidebtn shadow-sm" data-bs-toggle="modal" data-bs-target="#confirmRentModal">Start ride now</button>
+                            <button type="button" class="btn btn-primary rounded-pill viewDetails shadow-sm" data-bs-toggle="modal" data-bs-target="#viewDetailsModal">View details</button>
+                            <button type="button" class="btn btn-danger rounded-pill cancelReservedbtn shadow-sm" data-bs-toggle="modal" data-bs-target="#cancelReservedModal">Cancel</button>
                         </div>  
                     </div>
                 </div>                    
@@ -679,15 +771,89 @@ function createReservedCars(object){
         reservedCar.classList.add('reserved-car');
         reservedCar.classList.add('mb-5');
         reservedCar.innerHTML = reservedRideContent;
+        clearInterval(sessionStorage.getItem('countDown'))
+        startCountDown(reservedCar, object);
         element.append(reservedCar);
         reservedCar.getElementsByClassName('cancelReservedbtn')[0].addEventListener('click', handleCancelClicked);
         reservedCar.getElementsByClassName('startRidebtn')[0].addEventListener('click', handleConfirmRentStartNow);
+        reservedCar.getElementsByClassName('viewDetails')[0].addEventListener('click', handleViewDetails);
+}
+
+var viewDetailsElement
+
+function handleViewDetails(event){
+    var button = event.target;
+        var carInfo = button.parentElement.parentElement.parentElement.parentElement;
+        var pictureUrl = carInfo.getElementsByClassName('picture-Url')[0].src;
+        var carBrand = carInfo.getElementsByClassName('car-brand')[0].innerText;
+        var fuelLeft = carInfo.getElementsByClassName('car-fuel-left')[0].innerText;
+        var carPlate = carInfo.getElementsByClassName('car-plate')[0].innerText;
+        var carPrice = carInfo.getElementsByClassName('car-price')[0].innerText;
+        var timeLeft = carInfo.getElementsByClassName('time-left-reserved')[0].innerHTML;
+        var time = carInfo.getElementsByClassName('ride-date')[0].innerText;
+        viewDetailsElement = carInfo;
+        var content = `
+        <div class="card w-80 my-5 border-0" >
+            <div class="row d-flex align-items-center flex-row g-0">
+                <div class="col-md-6 d-flex justify-content-center justify-content-lg-start">
+                    <img src="${pictureUrl}" class="img-fluid rounded-start picture-Url" style="height: 10rem;"/>
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h3 class="car-plate" > <strong>${carPlate} </strong></h4>
+                        <h5 class="car-brand">${carBrand} </h5>
+                        <h5 class="car-price">${carPrice}</h5> 
+                    </div>
+                </div>                    
+            </div>
+            <div class="mt-3"
+            <h5 class="car-fuel-left"> ${fuelLeft}</h5>
+            <h5 class="ride-date">${time}</h5>
+            <div class="time-left-reserved-view card-text"> ${timeLeft}
+            </div>   
+        </div>
+        `;
+        document.getElementsByClassName('viewDetailsInfo')[0].innerHTML = content;
+}
+
+function handleEditReservation(){
+    document.getElementsByClassName('edit-reservation')[0].removeAttribute('hidden');
+}
+
+function handleSaveClickedReservation(event){
+    var button = event.target;
+    var newInfo = button.parentElement.parentElement.parentElement.parentElement;
+    var chosenDate = document.getElementById('chosen-date-reserve').value;
+    var chosenHour = document.getElementById('chosen-hour-reserve').value;
+    var chosenMin = document.getElementById('chosen-minute-reserve').value;
+    var prevId = newInfo.getElementsByClassName('ride-date')[0].innerText.replace('Reserved time: ', '').replaceAll(':', '').replaceAll('-', '');
+    var user = JSON.parse(sessionStorage.getItem(getUserID()));
+    var reserved = user.reservedCars;
+    newInfo.getElementsByClassName('ride-date')[0].innerHTML = `Reserved time: ${chosenDate}-${chosenHour}:${chosenMin}`;
+    viewDetailsElement.getElementsByClassName('ride-date')[0].innerHTML = `Reserved time: ${chosenDate}-${chosenHour}:${chosenMin}`
+        
+    for(var i = 0; i < reserved.length; i++){
+        var car = reserved[i];
+        var currentId = (car.chosenDate + "" + car.chosenHour + "" + car.chosenMin).replaceAll('-', '');
+        if (parseInt(currentId) == parseInt(prevId)) {
+            car.chosenDate = chosenDate; 
+            car.chosenHour = chosenHour;
+            car.chosenMin = chosenMin;
+        }
+    }
+    var reserved = user.reservedCars;
+    document.getElementsByClassName('reserved-rides')[0].innerHTML = ''
+    for (var i = 0; i < reserved.length; i++) {
+        createReservedCars(reserved[i]);
+    }
+    sessionStorage.setItem(getUserID(), JSON.stringify(user));
+    document.getElementsByClassName('edit-reservation')[0].setAttribute('hidden', 'true');
 }
 
 function checkIfCurrentIsEmpty(modal){
-    var user = JSON.parse(sessionStorage.getItem(getUserID()));
     var bool = true;
         modal.addEventListener('show.bs.modal', function(event) {
+            var user = JSON.parse(sessionStorage.getItem(getUserID()));
             if (user.currentRide != '') {
                 bool = false
                 alert('Please end your current ride before starting a new')
@@ -714,9 +880,9 @@ function handleConfirmRentStartNow(event){
                 </div>
                 <div class="col-md-6">
                     <div class="card-body">
-                    <h3 class="car-brand" > <strong>${carBrand} </strong></h4>
+                    <h3 class="car-plate" > <strong>${carPlate} </strong></h4>
                     <h5 class="car-fuel-left"> ${fuelLeft}</h5>
-                    <h5 class="car-plate">${carPlate} </h5>
+                    <h5 class="car-brand">${carBrand} </h5>
                     <h5 class="car-price">${carPrice}</h5> 
                     <h5 class="ride-date">${time}</h5>   
                     </div>
@@ -740,27 +906,26 @@ function handleStartNowClicked(event){
     var carBrand = carInfo.getElementsByClassName('car-brand')[0].innerText;
     var carPlate = carInfo.getElementsByClassName('car-plate')[0].innerText;
     var carPrice = carInfo.getElementsByClassName('car-price')[0].innerText.replace('Price: ', '' ).replace('%', '').replace('l', '');
-    var time = carInfo.getElementsByClassName('ride-date')[0].innerText;
     const currentDate = new Date()
     var timeDate = currentDate.getDate() + "/" + (currentDate.getMonth() + 1) + " " + checkTime(currentDate.getHours()) + ":" + checkTime(currentDate.getMinutes());
     var currentRideContent = `
-    <div class="card w-80" >
-            <div class="row d-flex align-items-center flex-row g-0">
+    <div class="card w-80 rounded-pill shadow-sm" >
+        <div class="row d-flex align-items-center flex-row g-0 me-4">
                 <div class="col-md-4 d-flex justify-content-center justify-content-lg-start">
-                    <img src="${pictureUrl}" class="img-fluid rounded-start picture-Url" style="height: 15rem;"/>
+                    <img src="${pictureUrl}" class="img-fluid rounded-pill picture-Url" style="height: 15rem;"/>
                 </div>
                 <div class="col-md-8">
                     <div class="card-body d-flex flex-row">
                         <div class="col-md-8">
-                            <h3 class="car-brand card-title" > <strong>${carBrand} </strong></h4>
-                            <h5 class="car-plate card-text">${carPlate} </h5>  
+                            <h3 class="car-plate card-title" > <strong>${carPlate} </strong></h4>
+                            <h5 class="car-brand card-text">${carBrand} </h5>  
                             <h4 class="card-text ride-date">${timeDate}</h5>
                             <h6 id="timerRented" class="card-text timerRented"></h6>
                             <h6 id="car-price-current" class="card-text car-price-current">Price: ${carPrice}</h6>
                             <h6 id="totalPriceCurrentRide" class="card-text totalPriceCurrentRide">Total: time*price</h6>
                         </div>
                         <div class="d-flex align-items-end flex-column justify-content-evenly col-md-4 ps-3">
-                            <button type="button" class="btn btn-primary float-end rounded-3 shadow-sm" id="endRidebtn" data-bs-toggle="modal" data-bs-target="#confirmEndRideModal">End ride</button>
+                            <button type="button" class="btn btn-primary float-end rounded-pill shadow-sm" id="endRidebtn" data-bs-toggle="modal" data-bs-target="#confirmEndRideModal">End ride</button>
                         </div>  
                     </div>
                 </div>                    
@@ -772,6 +937,7 @@ function handleStartNowClicked(event){
     sessionStorage.setItem(getUserID(), JSON.stringify(user));
     var startTimeCar = Math.floor(Date.now() / 1000);
     sessionStorage.setItem('startTime', startTimeCar);
+
     carInfo.parentElement.remove();
     loadCurrentRide();
 }
@@ -792,9 +958,9 @@ function handleCancelClicked(event){
                     </div>
                     <div class="col-md-6">
                         <div class="card-body">
-                            <h3 class="car-brand" > <strong>${carBrand} </strong></h4>
+                            <h3 class="car-plate" > <strong>${carPlate} </strong></h4>
                             <h5 class="ride-date"> ${chosenDate}</h5>
-                            <h5 class="car-plate">${carPlate} </h5>
+                            <h5 class="car-brand">${carBrand} </h5>
                             <h5 class="car-price">${carPrice}</h5>   
                         </div>
                     </div>                    
@@ -826,13 +992,17 @@ function removeReservedCar(event){
     if (!cancelElement){
         cancelElement = startNowElement;
     }
-    cancelElement.remove();
     sessionStorage.setItem(getUserID(), JSON.stringify(user));
+    var reserved = user.reservedCars;
+    document.getElementsByClassName('reserved-rides')[0].innerHTML = ''
+    for (var i = 0; i < reserved.length; i++) {
+        createReservedCars(reserved[i]);
+    }
 }
 
 function handleViewRide(event){
     var button = event.target;
-    var viewButton = button.parentElement;
+    var viewButton = button.parentElement.parentElement;
     var recieptContent = viewButton.getElementsByClassName('recieptContent')[0].innerHTML;
     document.getElementsByClassName('recieptInfoContainer')[0].innerHTML = recieptContent;
 }
@@ -854,8 +1024,8 @@ function handleEndRideClicked(event){
                 </div>
                 <div class="col-md-6">
                     <div class="card-body">
-                        <h3 class="car-brand" > <strong>${carBrand} </strong></h4>
-                        <h5 class="car-plate">${carPlate} </h5>
+                        <h3 class="car-plate" > <strong>${carPlate} </strong></h4>
+                        <h5 class="car-brand">${carBrand} </h5>
                         <h5 class="car-price">${carPrice}</h5>  
                         <h5 class="totalPriceCurrentRide">${carTotal}</h5>   
                     </div>
@@ -895,40 +1065,54 @@ function handleEndRide(){
         }
         clearTimeout(sessionStorage.getItem('timeout'));
         sessionStorage.setItem('timer', 0);
+        var totalInt = carTotal.replace('kr.-', '').replace('Total: ', '');
+        var priceInt = carPrice.replace('kr.-/min', '').replace('Price: ', '');
+        var minutes = Math.floor(totalInt/priceInt);
+        
         var recieptContent = `
-            <div class="my-2 d-flex align-items-center flex-column">
+            <div class="my-2 flex-column">
                 <div class="my-2 text-center">
                     <p class="h3">Thank you for using our service!</p>
-                    <p class="h3" id="purchase-user-name">${userNameElement.innerText}</p>
+                    <p class="h3" id="purchase-user-name">${getUserName()}</p>
                     <p class="h5">${date}</p>
                 </div>
             </div>
-            <div class="card w-80 my-5 border-0" >
+            <div class="card w-80 my-3 border-0" >
                 <div class="row d-flex align-items-center flex-row g-0">
                     <div class="col-md-6 d-flex justify-content-center justify-content-lg-start">
                         <img src="${pictureUrl}" class="img-fluid rounded-start picture-Url" style="height: 10rem;"/>
                     </div>
                     <div class="col-md-6">
                         <div class="card-body">
-                        <h3 class="car-brand" > <strong>${carBrand} </strong></h4>
-                        <h5 class="car-plate">${carPlate} </h5>
-                        <h5 class="car-price">${carPrice} </h5>    
+                            <h3 class="car-plate card-title"> <strong>${carPlate} </strong></h4>
+                            <h5 class="car-brand card-text">${carBrand} </h5>
+                            <h5 class="car-price card-text">${carPrice} </h5>    
                         </div>
                     </div>                    
                 </div>
             </div>
-                <p class="h4" id="used-time">Time driven: ${endTime.replace('Time: ', '')}</p> 
+            <div class="container pt-2">
+                <p class="h5" id="used-time">Time driven: ${endTime.replace('Time: ', '')}</p> 
+            </div>
             <section class="container pb-5">
-                <div class="row d-flex justify-content-evenly align-items-center border-bottom">
-                    <div class="col">
-                        <div class="float-end d-flex align-items-center flex-row">
-                            <p class="h5" id="totalPrice">${carTotal}</p>
-                        </div>
+                <div class="row">
+                    <div class="col-xl-10">
+                    <p>Minutes</p>
                     </div>
+                    <div class="col-xl-2">
+                    <p class="float-end">${minutes}
+                    </p>
+                    </div>
+                    <hr style="border: 2px solid black;">
                 </div>
-            </section>
-            <button class="btn btn-secondary rounded-3 okButton shadow-sm" type="button" data-bs-dismiss="modal">OK</button>
-        `;
+                <div class="row text-black">
+                    <div class="col-xl-12">
+                    <p class="float-end fw-bold">${carTotal}
+                    </p>
+                    </div>
+                    <hr style="border: 2px solid black;">
+                </div>
+            </section>`;
         document.getElementsByClassName('recieptInfoContainer')[0].innerHTML = recieptContent;
         updateBalance(-parseInt(carTotal.replace('Total: ', '')))
         createPreviousRidesContent(prevData);
@@ -939,55 +1123,82 @@ function handleEndRide(){
 }
 
 function createPreviousRidesContent(object){
+    var totalInt = object.carTotal.replace('kr.-', '').replace('Total: ', '');
+    var priceInt = object.carPrice.replace('kr.-/min', '').replace('Price: ', '');
+    var minutes = Math.floor(totalInt/priceInt);
+    
     var recieptContent = `
+        <div class="my-2 flex-column">
             <div class="my-2 text-center">
                 <p class="h3">Thank you for using our service!</p>
-                <p class="h3" id="purchase-user-name">${userNameElement.innerText}</p>
+                <p class="h3" id="purchase-user-name">${getUserName()}</p>
+                <p class="h5">${object.date}</p>
             </div>
-            <div class="d-flex align-items-center flex-column my-3 border-bottom">
-                <img src="${object.pictureUrl}" width="200" class="rounded picture-Url"/>
-                <h3 class="car-brand" > <strong>${object.carBrand} </strong></h4>
-                <h5 class="car-plate">${object.carPlate} </h5>
-                <h5 class="car-price">${object.carPrice} </h5>   
-            </div>
-                <p class="h4" id="used-time">Time driven: ${object.endTime}</p> 
-            <section class="container pb-5">
-                <div class="row d-flex justify-content-evenly align-items-center border-bottom">
-                    <div class="col">
-                        <div class="float-end d-flex align-items-center flex-row">
-                            <p class="h5 px-3">Total Cost: </p>
-                            <p class="h5" id="totalPrice">${object.carTotal}</p>
-                        </div>
-                    </div>
+        </div>
+        <div class="card w-80 my-3 border-0" >
+            <div class="row d-flex align-items-center flex-row g-0">
+                <div class="col-md-6 d-flex justify-content-center justify-content-lg-start">
+                    <img src="${object.pictureUrl}" class="img-fluid rounded-start picture-Url" style="height: 10rem;"/>
                 </div>
-            </section>
-            <button class="btn btn-secondary rounded-3 okButton shadow-sm" type="button" data-bs-dismiss="modal">Close</button>
-        `
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h3 class="car-plate card-title"> <strong>${object.carPlate} </strong></h4>
+                        <h5 class="car-brand card-text">${object.carBrand} </h5>
+                        <h5 class="car-price card-text">${object.carPrice} </h5>    
+                    </div>
+                </div>                    
+            </div>
+        </div>
+        <div class="container pt-2">
+            <p class="h5" id="used-time">Time driven: ${object.endTime.replace('Time: ', '')}</p> 
+        </div>
+        <section class="container pb-5">
+            <div class="row">
+                <div class="col-xl-10">
+                <p>Minutes</p>
+                </div>
+                <div class="col-xl-2">
+                <p class="float-end">${minutes}
+                </p>
+                </div>
+                <hr style="border: 2px solid black;">
+            </div>
+            <div class="row text-black">
+                <div class="col-xl-12">
+                <p class="float-end fw-bold">${object.carTotal}
+                </p>
+                </div>
+                <hr style="border: 2px solid black;">
+            </div>
+        </section>`;
         var previousContent = `
-            <div class="card w-80 previous-rides" >
-                <div class="row d-flex align-items-center flex-row g-0">
+            <div class="card w-80 rounded-pill shadow-sm" >
+                <div class="ms-3 me-4 my-2 row d-flex align-items-center flex-row g-0">
                     <div class="card-body d-flex flex-row">
                         <div class="col-md-8">
                             <h4 class="card-title">${object.date}</h5>
                             <h6>${object.endTime}</h6>
                             <h6>${object.carTotal}</h6>
                         </div>                            
+
+                        <div class="d-flex align-items-end flex-column justify-content-evenly col-md-4 ps-3">
+                            <button type="button" class="btn btn-primary rounded-pill shadow-sm viewButton float-end" data-bs-toggle="modal" data-bs-target="#viewRecieptModal">View ride</button>
+                        </div>  
                         <div hidden class="recieptContent">
                             ${recieptContent}
-                            </div>
-                        <div class="d-flex align-items-end flex-column justify-content-evenly col-md-4 ps-3">
-                            <button type="button" class="btn btn-primary rounded-3 shadow-sm viewButton float-end" data-bs-toggle="modal" data-bs-target="#viewRecieptModal">View ride</button>
-                        </div>  
+                        </div>
                     </div>
                 </div>      
-            </div>`;
+            </div>
+            `;
 
         var previousRidesElement = document.getElementsByClassName('previous-rides')[0];
         var prevRide = document.createElement('div');
         prevRide.classList.add('prevRide');
+        prevRide.classList.add('mb-5');
         prevRide.innerHTML = previousContent;
         previousRidesElement.append(prevRide);
-        prevRide.getElementsByClassName('viewButton')[0].addEventListener('click', handleViewRide)
+        prevRide.getElementsByClassName('viewButton')[0].addEventListener('click', handleViewRide);
 }
 
 

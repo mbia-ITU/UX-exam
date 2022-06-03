@@ -61,6 +61,10 @@
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
     <script src="https://unpkg.com/leaflet-makimarkers@3.1.0/Leaflet.MakiMarkers.js"></script>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -85,10 +89,7 @@
                             <a class="nav-link active" href="history.html">History</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#FAQ">FAQ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#funds">Funds</a>
+                            <a class="nav-link" href="FAQ.html">FAQ</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center pb-3">
@@ -128,7 +129,7 @@
                 <div class="container py-4">
                     <div class="row">
                         <p class="h2">Current ride: </p>
-                        <div class="currentRideInfo">
+                        <div class="currentRideInfo mt-4">
                             <h3>You do not have any current ride </h3>
                             <h5>Go to the front page to rent a car :)</h5>
                         </div>
@@ -136,15 +137,15 @@
                 </div>
                 <div class="container py-4 reserved-container" hidden>
                     <div class="row">
-                        <p class="h2 mb-3">Reserved cars:</p>
-                        <div class="reserved-rides">
+                        <p class="h2">Reserved cars:</p>
+                        <div class="reserved-rides mt-4">
                         </div>
                     </div>
                 </div>
                 <div class="container py-4">
                     <div class="row">
                         <p class="h2">Previous rides:</p>
-                        <div class="previous-rides">
+                        <div class="previous-rides mt-4">
                             <h5>Please log-in to see your previous rides or end a ride</h5>
                         </div>
                     </div>
@@ -171,8 +172,8 @@
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
-                        <button type="button" class="btn btnNotConfirm rounded-3 shadow-sm btn-lg" data-bs-dismiss="modal">Nope.</button>
-                        <button type="button" class="btn btn-secondary btnConfirm rounded-3 shadow-sm btn-lg" id="btnConfirmEndedRide" data-bs-toggle="modal" data-bs-target="#viewRecieptModal">Yup!</button>
+                        <button type="button" class="btn btnNotConfirm rounded-pill shadow-sm btn-lg" data-bs-dismiss="modal">Nope.</button>
+                        <button type="button" class="btn btn-secondary btnConfirm rounded-pill shadow-sm btn-lg" id="btnConfirmEndedRide" data-bs-toggle="modal" data-bs-target="#viewRecieptModal">Yup!</button>
                     </div>
                 </div>
             </div>
@@ -188,6 +189,85 @@
                     <div class="modal-body">
                         <div class="container d-flex align-items-center flex-column recieptInfoContainer">
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary rounded-pill okButton shadow-sm" type="button" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="modal" id="viewDetailsModal" tabindex="-1" aria-hidden="true" aria-labelledby="viewDetailsLabel">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewDetailsLabel">Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container d-flex align-items-center flex-column viewDetailsInfo">
+                        </div>
+                        <div class="edit-reservation" hidden>
+                            <div class="container mb-3 d-flex flex-column align-items-start justify-content-evenly">
+                                <p class="h5 mb-3">Date: </p> 
+                                <form>
+                                    <input type="date" id="chosen-date-reserve" name="datemin" min="">
+                                </form>
+                            </div>
+                            <div class="container d-flex flex-column align-items-start justify-content-evenly">
+                                <p class="h5">Time: </p> 
+                                <div class="container d-flex flex-row align-items-center justify-content-evenly pt-3">
+                                <select class="form-select rounded-pill shadow-sm me-3" aria-label="select hour start" id="chosen-hour-reserve">
+                                    <option selected>Choose hour</option>
+                                    <option value="0">00</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                  </select>
+                                  <select class="form-select rounded-pill shadow-sm" aria-label="select minute start" id="chosen-minute-reserve">
+                                    <option selected>Choose minute</option>
+                                    <option value="00">00</option>
+                                    <option value="05">05</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                    <option value="30">30</option>
+                                    <option value="35">35</option>
+                                    <option value="40">40</option>
+                                    <option value="45">45</option>
+                                    <option value="50">50</option>
+                                    <option value="55">55</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary save-button rounded-pill shadow-sm">Save</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary rounded-pill edit-reservation-btn shadow-sm" type="button">Edit</button>
+                        <button class="btn btn-secondary rounded-pill okButton shadow-sm" type="button" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -208,8 +288,8 @@
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
-                        <button type="button" class="btn btn btnNotConfirm rounded-3 shadow-sm btn-lg" data-bs-dismiss="modal">Nope.</button>
-                        <a class="btn btn-secondary btnConfirmCancelReserve rounded-3 shadow-sm btn-lg" data-bs-dismiss="modal" role="button">Yup!</a>
+                        <button type="button" class="btn btn btnNotConfirm rounded-pill shadow-sm btn-lg" data-bs-dismiss="modal">Nope.</button>
+                        <a class="btn btn-secondary btnConfirmCancelReserve rounded-pill shadow-sm btn-lg" data-bs-dismiss="modal" role="button">Yup!</a>
                     </div>
                 </div>
             </div>
@@ -219,17 +299,20 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Are you sure you want to rent this car?</h5>
+                        <h5 class="modal-title">Rent Car</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body d-flex align-items-center flex-column">
-                        <p>The timer will start when you confirm</p>
+                        <div class="text-center">
+                            <h4 class="m-3">Are you sure you want to rent this car?</h4>
+                            <h6>The timer will start when you confirm</h6>
+                        </div>
                         <div class="container confirmStartNowInfo"></div>
                         
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
-                        <button type="button" class="btn btn btnNotConfirm rounded-3 shadow-sm btn-lg" data-bs-dismiss="modal">Nope.</button>
-                        <button type="button" class="btn btn-secondary btnConfirmStartNow rounded-3 shadow-sm btn-lg" data-bs-dismiss="modal">Yup!</a>
+                        <button type="button" class="btn btn btnNotConfirm rounded-pill shadow-sm btn-lg" data-bs-dismiss="modal">Nope.</button>
+                        <button type="button" class="btn btn-secondary btnConfirmStartNow rounded-pill shadow-sm btn-lg" data-bs-dismiss="modal">Yup!</a>
                     </div>
                 </div>
             </div>

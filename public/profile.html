@@ -64,6 +64,10 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -88,10 +92,7 @@
                             <a class="nav-link" href="history.html">History</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#FAQ">FAQ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#funds">Funds</a>
+                            <a class="nav-link" href="FAQ.html">FAQ</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center pb-3">
@@ -104,12 +105,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <button type="button" hidden id="sign-out" class="btn btn-outline-primary buttonSignInOut rounded-3 shadow-sm">
+                            <button type="button" hidden id="sign-out" class="btn btn-outline-primary buttonSignInOut rounded-pill shadow-sm">
                                     <strong>Sign-out</strong>
                                 </button>
                         </li>
                         <li class="nav-item">
-                            <button type="button" id="sign-in" class="btn btn-outline-primary buttonSignInOut rounded-3 shadow-sm">
+                            <button type="button" id="sign-in" class="btn btn-outline-primary buttonSignInOut rounded-pill shadow-sm">
                                 <div class="d-flex align-items-center d-flex justify-content-evenly">
                                     <span class="material-icons px-1">account_circle</span>  
                                     <strong>Sign-in with Google</strong>             
@@ -124,33 +125,33 @@
 
     <main>
         <div class="container profile-tag">
-            <p class="h1">Your Profile</p>
-            <p class="h4">Here you can see your profile and edit it</p>
-            <div class="row row-cols-1 row-cols-md-2">
+            <p class="h2">Your Profile</p>
+            <p class="h4 welcomeUser"></p>
+            <div class="row row-cols-1 row-cols-md-2 mt-3">
                 <div class="col">
-                    <div class="my-5 d-flex flex-row justify-content-between">
-                        <h5 id="current-balance">Current balance: 0kr.-</h5>
-                        <button class="btn btn-secondary updateBalanceButton rounded-3 shadow-sm" type="button" data-bs-toggle="modal" data-bs-target="#updateBalanceModal">Update balance</button> 
+                    <div class="mb-3 d-flex flex-row justify-content-between">
+                        <h4 id="current-balance">Current balance: 0kr.-</h4>
+                        <button class="btn btn-secondary updateBalanceButton rounded-pill shadow-sm" type="button" data-bs-toggle="modal" data-bs-target="#updateBalanceModal">Update balance</button> 
                     </div>
                     <form>
                         <div class=" mb-3">
                             <label for="inputName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="inputName">
+                            <input type="text" class="form-control rounded-pill shadow-sm" id="inputName">
                         </div>
                         <div class=" mb-3">
                             <label for="inputEmail" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="inputEmail">
+                            <input type="email" class="form-control rounded-pill shadow-sm" id="inputEmail">
                         </div>
                         <div class="mb-3">
                             <label for="inputPhone" class="form-label">Phone</label>
                             <div class="input-group">
-                                <span class="input-group-text" id="phone-add-on">+45</span>
-                                <input type="text" class="form-control" id="inputPhone">
+                                <span class="input-group-text rounded-pill shadow-sm" id="phone-add-on">+45</span>
+                                <input type="text" class="form-control rounded-pill shadow-sm" id="inputPhone">
                             </div>
                         </div>                       
                     </form>
                     <div class="float-end">
-                        <button class="btn btn-secondary save-button rounded-3 shadow-sm">Save</button>
+                        <button class="btn btn-secondary save-button rounded-pill shadow-sm">Save</button>
                     </div>
                 </div>
                 <div class="col card-information-column">
@@ -158,7 +159,7 @@
                         <div class="d-flex align-items-center flex-row">
                             <!--Card display from https://codepen.io/DevUncoded/pen/rGjpXG-->
                             <p class="h4 me-5">Card Information</p>
-                            <button class="btn btn-secondary float-end rounded-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#addCard">Add card</button>
+                            <button class="btn btn-secondary float-end rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#addCard">Add card</button>
                         </div>
                     </div>
                 </div>
@@ -173,37 +174,37 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <div class="text-center mb-4">
+                            <h4>Choose which of your saved cards and the amount</h4>
+                        </div>
                         <div class="row mb-3">
-                            <div class="col mx-2">
-                                <div class="text-center  mb-4">
-                                    <h4>Choose which of your saved cards and the amount</h4>
-                                </div>
-                                <label for="updateBalanceAmount" class="form-label">Choose the amount</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="updateBalanceAmount">
-                                    <span class="input-group-text" id="addOn">kr</span>
-                                </div>
-                            </div>
-                            <div class="col mx-2">
-                                <div class="container d-flex align-items-center flex-column me-5 border w-100">
+                            <div class="col m-2 d-flex align-items-center flex-column me-5">
                                     <form>
-                                        <div class="group group-saved-creditcards d-flex align-items-center flex-column w-100">
+                                        <div class="group group-saved-creditcards d-flex align-items-center flex-column justify-content-evenly">
                                         
                                         </div>
                                     </form>
+                            </div>
+                            <div class="col mx-2 d-flex flex-row align-items-center">
+                                <div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control rounded-pill shadow-sm" id="updateBalanceAmount">
+                                        <span class="input-group-text rounded-pill shadow-sm" id="addOn">kr</span>
+                                    </div>
+                                    <label for="updateBalanceAmount" class="form-label">Amount</label>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
-                        <button type="button" class="btn btn btnNotConfirm rounded-3 shadow-sm" data-bs-dismiss="modal">Back</button>
-                        <button type="button" class="btn btn-secondary updateBalanceConfirmed rounded-3 shadow-sm" data-bs-dismiss="modal">Update balance</button>
+                        <button type="button" class="btn btn btnNotConfirm rounded-pill shadow-sm" data-bs-dismiss="modal">Back</button>
+                        <button type="button" class="btn btn-secondary updateBalanceConfirmed rounded-pill shadow-sm" data-bs-dismiss="modal">Update balance</button>
                     </div>
                 </div>
                     
             </div>
         </div>
-
 
         <div class="modal" id="addCard" tabindex="-1" aria-hidden="true" aria-labelledby="addCardLabel">
             <div class="modal-dialog">
@@ -288,7 +289,7 @@
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button class="btn btn-secondary addCardConfirm rounded-3 shadow-sm" data-bs-dismiss="modal">Add card</button>
+                            <button class="btn btn-secondary addCardConfirm rounded-pill shadow-sm" data-bs-dismiss="modal">Add card</button>
                         </div>
                 </div>
             </div>

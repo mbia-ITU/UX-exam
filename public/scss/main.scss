@@ -33,7 +33,7 @@ $navbar-light-toggler-border-color: white;
 
 html, body,
 p, h1, h2, h3, h4, h5, h6 {
-    font-family: "PT Mono", Helvetica, sans-serif;
+    font-family: 'Comfortaa', cursive;
 }
 
 .navbar-brand .material-icons {
@@ -72,19 +72,19 @@ section {
 .btnNotConfirm {
     background-color: rgb(113, 113, 113);
     color: white;
-    width: 130px;
+    width: 150px;
 }
 .btn-secondary {
     color: white;
-    width: 130px;
+    width: 150px;
 }
 
 .btn-danger {
-    width: 130px;
+    width: 150px;
 }
 
 .btn-primary {
-    width: 130px;
+    width: 150px;
 }
 .btn-primary:hover {
     background-color: lighten($color: $primary, $amount: 10%);
@@ -99,6 +99,14 @@ section {
 
 .blueBottons {
     width: 200px;
+}
+
+.updateBalanceButton {
+    width: fit-content;
+}
+
+.faq-form {
+    margin-top: 15em;
 }
 
 .credit-card {

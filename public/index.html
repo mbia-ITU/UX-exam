@@ -64,6 +64,10 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -88,10 +92,7 @@
                             <a class="nav-link" href="history.html">History</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#FAQ">FAQ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#funds">Funds</a>
+                            <a class="nav-link" href="FAQ.html">FAQ</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav mb-2 mb-lg-0 d-flex align-items-center pb-3">
@@ -104,12 +105,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <button type="button" hidden id="sign-out" class="btn btn-outline-primary buttonSignInOut rounded-3 shadow-sm">
+                            <button type="button" hidden id="sign-out" class="btn btn-outline-primary buttonSignInOut rounded-pill shadow-sm">
                                     <strong>Sign-out</strong>
                                 </button>
                         </li>
                         <li class="nav-item">
-                            <button type="button" id="sign-in" class="btn btn-outline-primary buttonSignInOut rounded-3 shadow-sm">
+                            <button type="button" id="sign-in" class="btn btn-outline-primary buttonSignInOut rounded-pill shadow-sm">
                                 <div class="d-flex align-items-center d-flex justify-content-evenly">
                                     <span class="material-icons px-1">account_circle</span>  
                                     <strong>Sign-in with Google</strong>             
@@ -284,16 +285,20 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Are you sure you want to rent this car?</h5>
+                        <h5 class="modal-title">Rent Car</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body d-flex align-items-center flex-column">
+                        <div class="text-center">
+                            <h4 class="m-3">Are you sure you want to rent this car?</h4>
+                            <h6>The timer will start when you confirm</h6>
+                        </div>
                         <div class="container carInfoRent"></div>
-                        <p>The timer will start when you confirm</p>
+                        
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
-                        <button type="button" class="btn btn btnNotConfirm rounded-3 shadow-sm" data-bs-dismiss="modal">Nope.</button>
-                        <a class="btn btn-secondary btnConfirmRent rounded-3 shadow-sm" href="history.html" role="button" onclick="removeCurrentCar()">Yup!</a>
+                        <button type="button" class="btn btn btnNotConfirm rounded-pill shadow-sm" data-bs-dismiss="modal">Nope.</button>
+                        <a class="btn btn-secondary btnConfirmRent rounded-pill shadow-sm" href="history.html" role="button" onclick="removeCurrentCar()">Yup!</a>
                     </div>
                 </div>
             </div>
@@ -307,13 +312,21 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p class="h3">At what time do you want to reserve it?</p>
+                        <div class="text-center">
+                            <p class="h4">At what time do you want to reserve it?</p>
+                        </div>
                         <div class="container carInfoReserve">
                         </div>
-                        <div class="container d-flex flex-column align-items-center justify-content-evenly">
-                            <p class="h5">Choose your start time</p> 
+                        <div class="container mb-3 d-flex flex-column align-items-start justify-content-evenly">
+                            <p class="h5 mb-3">Date: </p> 
+                            <form>
+                                <input type="date" id="chosen-date-reserve" name="datemin" min="">
+                            </form>
+                        </div>
+                        <div class="container d-flex flex-column align-items-start justify-content-evenly">
+                            <p class="h5">Time: </p> 
                             <div class="container d-flex flex-row align-items-center justify-content-evenly pt-3">
-                            <select class="form-select" aria-label="select hour start" id="chosen-hour-reserve">
+                            <select class="form-select rounded-pill shadow-sm me-3" aria-label="select hour start" id="chosen-hour-reserve">
                                 <option selected>Choose hour</option>
                                 <option value="0">00</option>
                                 <option value="1">1</option>
@@ -340,7 +353,7 @@
                                 <option value="22">22</option>
                                 <option value="23">23</option>
                               </select>
-                              <select class="form-select" aria-label="select minute start" id="chosen-minute-reserve">
+                              <select class="form-select rounded-pill shadow-sm" aria-label="select minute start" id="chosen-minute-reserve">
                                 <option selected>Choose minute</option>
                                 <option value="00">00</option>
                                 <option value="05">05</option>
@@ -357,16 +370,10 @@
                               </select>
                             </div>
                         </div>
-                        <div class="container m-2 d-flex justify-content-center">
-                            <p class="h5">Choose the date</p> 
-                            <form>
-                                <input type="date" id="chosen-date-reserve" name="datemin" min="">
-                            </form>
-                        </div>
                     </div>
                     <div class="modal-footer d-flex justify-content-evenly">
-                        <button type="button" class="btn btn btnNotConfirm rounded-3 shadow-sm" data-bs-dismiss="modal">Cancel</button>
-                        <a class="btn btn-secondary btnConfirmReserve rounded-3 shadow-sm" href="history.html" role="button" onclick="removeCurrentCar()">Reserve car!</a>
+                        <button type="button" class="btn btn btnNotConfirm rounded-pill shadow-sm" data-bs-dismiss="modal">Cancel</button>
+                        <a class="btn btn-secondary btnConfirmReserve rounded-pill shadow-sm" href="history.html" role="button" onclick="removeCurrentCar()">Reserve car!</a>
                     </div>
                 </div>
             </div>

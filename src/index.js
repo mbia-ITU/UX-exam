@@ -447,7 +447,8 @@ function addCardClicked(){
     cardContainer.classList.add('w-100')
     cardContainer.classList.add('d-flex')
     cardContainer.classList.add('flex-column')          
-    cardContainer.classList.add('flex-md-row')          
+    cardContainer.classList.add('flex-md-row') 
+    cardContainer.classList.add('align-items-md-center')         
     var cardContent = `
         <div class="credit-card ${selectedType} selectable">
             <div hidden class="card-number">${cardNumber}
@@ -507,7 +508,9 @@ function loadCards(){
             cardContainer.classList.add('w-100')
             cardContainer.classList.add('d-flex')
             cardContainer.classList.add('flex-column')          
-            cardContainer.classList.add('flex-md-row')          
+            cardContainer.classList.add('flex-md-row')              
+            cardContainer.classList.add('align-items-center')
+            cardContainer.classList.add('align-items-center')           
             var cardContent = `
                 <div class="credit-card ${cards[i].selectedType} selectable">
                     <div hidden class="card-number">${cards[i].cardNumber}
@@ -593,13 +596,13 @@ function handleConfirmRent(event){
     const currentDate = new Date()
     var timeDate = currentDate.getDate() + "/" + (currentDate.getMonth() + 1) + " " + checkTime(currentDate.getHours()) + ":" + checkTime(currentDate.getMinutes());
     var currentRideContent = `
-        <div class="card w-80 rounded-pill shadow-sm" >
+        <div class="card w-80 rounded-3 rounded-md-pill shadow-sm" >
             <div class="row d-flex align-items-center flex-row g-0 me-4">
-                <div class="col-md-4">
+                <div class="col-md-4 d-flex justify-content-center justify-content-lg-start mt-2">
                     <img src="${pictureUrl}" class="img-fluid rounded-pill picture-Url" style="height: 15rem;"/>
                 </div>
                 <div class="col-md-8">
-                    <div class="card-body d-flex flex-row">
+                    <div class="card-body d-flex flex-row row g-0">
                         <div class="col-md-8">
                             <h3 class="car-plate card-title" > <strong>${carPlate} </strong></h4>
                             <h5 class="car-brand card-text">${carBrand} </h5>  
@@ -608,7 +611,7 @@ function handleConfirmRent(event){
                             <h6 id="car-price-current" class="card-text car-price-current">Price: ${carPrice}</h6>
                             <h6 id="totalPriceCurrentRide" class="card-text totalPriceCurrentRide">Total: time*price</h6>
                         </div>
-                        <div class="d-flex align-items-end flex-column justify-content-evenly col-md-4 ps-3">
+                        <div class="d-flex align-items-md-end align-items-center flex-column justify-content-evenly col-md-4 ps-3">
                             <button type="button" class="btn btn-primary float-end rounded-pill shadow-sm" id="endRidebtn" data-bs-toggle="modal" data-bs-target="#confirmEndRideModal">End ride</button>
                         </div>  
                     </div>
@@ -738,13 +741,13 @@ function handleConfirmReserve(event){
 
 function createReservedCars(object){
     var reservedRideContent = `
-        <div class="card w-80 rounded-pill shadow-sm" >
+        <div class="card w-80 rounded-3 rounded-md-pill shadow-sm" >
             <div class="row d-flex align-items-center flex-row g-0 me-4">
-                <div class="col-lg-4 d-flex justify-content-center justify-content-lg-start">
+                <div class="col-md-4 d-flex justify-content-center justify-content-lg-start mt-2">
                     <img src="${object.pictureUrl}" class="img-fluid rounded-pill picture-Url" style="height: 15rem;"/>
                 </div>
-                <div class="col-lg-8">
-                    <div class="card-body d-flex flex-row">
+                <div class="col-md-8">
+                    <div class="card-body d-flex flex-row row g-0 ">
                         <div class="col-md-8">
                             <h4 class="car-plate card-title"> <strong>${object.carPlate} </strong></h4>
                             <h5 class="car-brand card-text" hidden>${object.carBrand} </h5>  
@@ -756,10 +759,10 @@ function createReservedCars(object){
                             <h6 class="card-text car-fuel-left" hidden>${object.fuelLeft}</h6>
                             <h6 id="car-price" class="card-text car-price" hidden>Price: ${object.carPrice}</h6>
                         </div>
-                        <div class="d-flex align-items-end flex-column justify-content-evenly col-md-4 ">
-                            <button type="button" class="btn btn-secondary rounded-pill startRidebtn shadow-sm" data-bs-toggle="modal" data-bs-target="#confirmRentModal">Start ride now</button>
-                            <button type="button" class="btn btn-primary rounded-pill viewDetails shadow-sm" data-bs-toggle="modal" data-bs-target="#viewDetailsModal">View details</button>
-                            <button type="button" class="btn btn-danger rounded-pill cancelReservedbtn shadow-sm" data-bs-toggle="modal" data-bs-target="#cancelReservedModal">Cancel</button>
+                        <div class="d-flex align-items-md-end align-items-center flex-column justify-content-evenly col-md-4">
+                            <button type="button" class="btn btn-secondary rounded-pill startRidebtn shadow-sm mb-1" data-bs-toggle="modal" data-bs-target="#confirmRentModal">Start ride now</button>
+                            <button type="button" class="btn btn-primary rounded-pill viewDetails shadow-sm mb-1" data-bs-toggle="modal" data-bs-target="#viewDetailsModal">View details</button>
+                            <button type="button" class="btn btn-danger rounded-pill cancelReservedbtn shadow-sm mb-1" data-bs-toggle="modal" data-bs-target="#cancelReservedModal">Cancel</button>
                         </div>  
                     </div>
                 </div>                    
@@ -909,13 +912,13 @@ function handleStartNowClicked(event){
     const currentDate = new Date()
     var timeDate = currentDate.getDate() + "/" + (currentDate.getMonth() + 1) + " " + checkTime(currentDate.getHours()) + ":" + checkTime(currentDate.getMinutes());
     var currentRideContent = `
-    <div class="card w-80 rounded-pill shadow-sm" >
+    <div class="card w-80 rounded-3 rounded-md-pill shadow-sm" >
         <div class="row d-flex align-items-center flex-row g-0 me-4">
-                <div class="col-md-4 d-flex justify-content-center justify-content-lg-start">
+                <div class="col-md-4 d-flex justify-content-center justify-content-lg-start mt-2">
                     <img src="${pictureUrl}" class="img-fluid rounded-pill picture-Url" style="height: 15rem;"/>
                 </div>
                 <div class="col-md-8">
-                    <div class="card-body d-flex flex-row">
+                    <div class="card-body d-flex flex-row row g-0">
                         <div class="col-md-8">
                             <h3 class="car-plate card-title" > <strong>${carPlate} </strong></h4>
                             <h5 class="car-brand card-text">${carBrand} </h5>  
@@ -924,7 +927,7 @@ function handleStartNowClicked(event){
                             <h6 id="car-price-current" class="card-text car-price-current">Price: ${carPrice}</h6>
                             <h6 id="totalPriceCurrentRide" class="card-text totalPriceCurrentRide">Total: time*price</h6>
                         </div>
-                        <div class="d-flex align-items-end flex-column justify-content-evenly col-md-4 ps-3">
+                        <div class="d-flex align-items-md-end align-items-center flex-column justify-content-evenly col-md-4 ps-3">
                             <button type="button" class="btn btn-primary float-end rounded-pill shadow-sm" id="endRidebtn" data-bs-toggle="modal" data-bs-target="#confirmEndRideModal">End ride</button>
                         </div>  
                     </div>
@@ -1091,7 +1094,7 @@ function handleEndRide(){
                     </div>                    
                 </div>
             </div>
-            <div class="container pt-2">
+            <div class="container">
                 <p class="h5" id="used-time">Time driven: ${endTime.replace('Time: ', '')}</p> 
             </div>
             <section class="container pb-5">
@@ -1149,7 +1152,7 @@ function createPreviousRidesContent(object){
                 </div>                    
             </div>
         </div>
-        <div class="container pt-2">
+        <div class="container">
             <p class="h5" id="used-time">Time driven: ${object.endTime.replace('Time: ', '')}</p> 
         </div>
         <section class="container pb-5">
@@ -1172,16 +1175,16 @@ function createPreviousRidesContent(object){
             </div>
         </section>`;
         var previousContent = `
-            <div class="card w-80 rounded-pill shadow-sm" >
+            <div class="card w-80 rounded-3 rounded-md-pill shadow-sm" >
                 <div class="ms-3 me-4 my-2 row d-flex align-items-center flex-row g-0">
-                    <div class="card-body d-flex flex-row">
+                    <div class="card-body d-flex flex-row row g-0">
                         <div class="col-md-8">
                             <h4 class="card-title">${object.date}</h5>
                             <h6>${object.endTime}</h6>
                             <h6>${object.carTotal}</h6>
                         </div>                            
 
-                        <div class="d-flex align-items-end flex-column justify-content-evenly col-md-4 ps-3">
+                        <div class="d-flex align-items-md-end align-items-center flex-column justify-content-evenly col-md-4 ps-3">
                             <button type="button" class="btn btn-primary rounded-pill shadow-sm viewButton float-end" data-bs-toggle="modal" data-bs-target="#viewRecieptModal">View ride</button>
                         </div>  
                         <div hidden class="recieptContent">

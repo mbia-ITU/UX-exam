@@ -83,12 +83,12 @@ function authStateObserver(user) {
     if (user) {
         // User is signed in!
         // Get the signed-in user's profile pic and name.
-        //var profilePicUrl = getProfilePicUrl()
+        var profilePicUrl = getProfilePicUrl()
         var userName = getUserName()
 
         // Set the user's profile pic and name.
-       // userPicElement.style.backgroundImage =
-         //   'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')'
+        userPicElement.style.backgroundImage =
+            'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')'
         userNameElement.textContent = userName
 
         // Show user's profile and sign-out button.
@@ -424,7 +424,8 @@ function saveButtonClicked(){
     if (phone != "" && phone != user.phone){
         user.phone = phone
     }
-    sessionStorage(getUserID(), JSON.stringify(user))
+    sessionStorage.setItem(getUserID(), JSON.stringify(user));
+    alert('Profile updated!')
 
 }
 
@@ -448,21 +449,21 @@ function addCardClicked(){
     cardContainer.classList.add('d-flex')
     cardContainer.classList.add('flex-column')          
     cardContainer.classList.add('flex-md-row') 
-    cardContainer.classList.add('align-items-md-center')         
+    cardContainer.classList.add('align-items-center')         
     var cardContent = `
-        <div class="credit-card ${selectedType} selectable">
-            <div hidden class="card-number">${cardNumber}
+            <div class="credit-card ${selectedType} selectable">
+                <div hidden class="card-number">${cardNumber}
+                </div>
+                <div class="credit-card-last4">
+                    ${last4}
+                </div>
+                <div class="credit-card-expiry">
+                    ${expire}
+                </div>
             </div>
-            <div class="credit-card-last4">
-                ${last4}
-            </div>
-            <div class="credit-card-expiry">
-                ${expire}
-            </div>
-        </div>
-        <div class="d-flex align-items-center">
-            <button class="btn btn-danger button-remove-card rounded-pill shadow-sm" type="button">Remove</button>
-        </div>`
+            <div class="d-flex align-items-center">
+                <button class="btn btn-danger button-remove-card rounded-pill shadow-sm" type="button">Remove</button>
+            </div>`
     cardContainer.innerHTML = cardContent;
     document.getElementsByClassName('card-information')[0].append(cardContainer)
     cardContainer.getElementsByClassName('button-remove-card')[0].addEventListener('click', removeCard)
@@ -509,8 +510,7 @@ function loadCards(){
             cardContainer.classList.add('d-flex')
             cardContainer.classList.add('flex-column')          
             cardContainer.classList.add('flex-md-row')              
-            cardContainer.classList.add('align-items-center')
-            cardContainer.classList.add('align-items-center')           
+            cardContainer.classList.add('align-items-center')          
             var cardContent = `
                 <div class="credit-card ${cards[i].selectedType} selectable">
                     <div hidden class="card-number">${cards[i].cardNumber}
@@ -596,9 +596,9 @@ function handleConfirmRent(event){
     const currentDate = new Date()
     var timeDate = currentDate.getDate() + "/" + (currentDate.getMonth() + 1) + " " + checkTime(currentDate.getHours()) + ":" + checkTime(currentDate.getMinutes());
     var currentRideContent = `
-        <div class="card w-80 rounded-3 rounded-md-pill shadow-sm" >
+        <div class="card w-80 rounded-3-card rounded-md-pill shadow-sm" >
             <div class="row d-flex align-items-center flex-row g-0 me-4">
-                <div class="col-md-4 d-flex justify-content-center justify-content-lg-start mt-2">
+                <div class="col-md-4 d-flex justify-content-center justify-content-lg-start mt-2 mt-md-0">
                     <img src="${pictureUrl}" class="img-fluid rounded-pill picture-Url" style="height: 15rem;"/>
                 </div>
                 <div class="col-md-8">
@@ -660,8 +660,9 @@ function startCountDown(element, object) {
     chosenDate = new Date(chosenDate);
     var chosenHour = object.chosenHour;
     var chosenMin = object.chosenMin;
-    chosenDate.setHours(chosenDate.getHours() + chosenHour);
-    chosenDate.setMinutes(chosenDate.getMinutes() + chosenMin);
+    chosenDate.setHours(chosenHour);
+    chosenDate.setMinutes(chosenMin);
+
     var x = setInterval(function() {
         var countDownDate = chosenDate.getTime();
         var now = new Date().getTime();
@@ -683,33 +684,56 @@ function startCountDown(element, object) {
         </div> 
         <div class="col">
             <div class="row">
-                <h5 class="ms-2" style="word-spacing: 2.5em;">${d} ${h} ${m} ${s}</h5>
+                <h5 class="ms-2 time-left-info" style="word-spacing: 2.5em;">${d} ${h} ${m} ${s}</h5>
                 <h6 style="word-spacing: 1.25em;">days hours minutes seconds</h6>
             </div>
         </div>`;
-        if (viewDetailsElement){
-            document.getElementsByClassName('time-left-reserved-view')[0].innerHTML = `
-            <div class="col">
-                <h6>Time left:</h6>
-            </div> 
-            <div class="col">
-                <div class="row">
-                    <h5 class="ms-2" style="word-spacing: 2.5em;">${d} ${h} ${m} ${s}</h5>
-                    <h6 style="word-spacing: 1.25em;">days hours minutes seconds</h6>
-                </div>
-            </div>`
-            if (diff < 0) {
-                clearInterval(x);
-                document.getElementsByClassName('time-left-reserved-view')[0].innerHTML = "EXPIRED";
-            }
-            }
         if (diff < 0) {
             clearInterval(x);
-            element.getElementsByClassName('time-left-reserved')[0].innerHTML = "EXPIRED";
+            removeReservedCar(element);
         }
-    }, 1000);
-    sessionStorage.setItem('countDown', x)    
+    }, 1000); 
+}
 
+function startCountDownViewRide(object){
+    var chosenDate = object.chosenDate;
+    chosenDate = new Date(chosenDate);
+    var chosenHour = object.chosenHour;
+    var chosenMin = object.chosenMin;
+    chosenDate.setHours(chosenHour);
+    chosenDate.setMinutes(chosenMin);
+    var x = setInterval(function() {
+        var countDownDate = chosenDate.getTime();
+        var now = new Date().getTime();
+        var diff = countDownDate - now;
+
+        var d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        var s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        d = checkTime(d);
+        h = checkTime(h);
+        m = checkTime(m);
+        s = checkTime(s);
+    
+        document.getElementsByClassName('time-left-reserved-view')[0].innerHTML = `
+        <div class="col">
+            <h6>Time left:</h6>
+        </div> 
+        <div class="col">
+            <div class="row">
+                <h5 class="ms-2 time-left-info" style="word-spacing: 2.5em;">${d} ${h} ${m} ${s}</h5>
+                <h6 style="word-spacing: 1.25em;">days hours minutes seconds</h6>
+            </div>
+        </div>`
+        if (diff < 0) {
+            clearInterval(x);
+            document.getElementsByClassName('time-left-reserved-view')[0].innerHTML = "EXPIRED";
+        }
+        
+    }, 1000);
+    sessionStorage.setItem('countDown', x) 
 }
 
 function handleConfirmReserve(event){
@@ -741,9 +765,9 @@ function handleConfirmReserve(event){
 
 function createReservedCars(object){
     var reservedRideContent = `
-        <div class="card w-80 rounded-3 rounded-md-pill shadow-sm" >
+        <div class="card w-80 rounded-3-card rounded-md-pill shadow-sm" >
             <div class="row d-flex align-items-center flex-row g-0 me-4">
-                <div class="col-md-4 d-flex justify-content-center justify-content-lg-start mt-2">
+                <div class="col-md-4 d-flex justify-content-center justify-content-lg-start mt-2 mt-md-0">
                     <img src="${object.pictureUrl}" class="img-fluid rounded-pill picture-Url" style="height: 15rem;"/>
                 </div>
                 <div class="col-md-8">
@@ -751,7 +775,7 @@ function createReservedCars(object){
                         <div class="col-md-8">
                             <h4 class="car-plate card-title"> <strong>${object.carPlate} </strong></h4>
                             <h5 class="car-brand card-text" hidden>${object.carBrand} </h5>  
-                            <h5 class="card-text ride-date">Reserved time: ${object.chosenDate}-${object.chosenHour}:${object.chosenMin}</h5>
+                            <h5 class="card-text ride-date">Reserved time: ${object.chosenDate} ${object.chosenHour}:${object.chosenMin}</h5>
                             <div class="time-left-reserved card-text">
                                 <h6>Time left:  00 00 00 00</h6> 
                                 <h6>days  hours  minutes  seconds </h6>
@@ -774,7 +798,6 @@ function createReservedCars(object){
         reservedCar.classList.add('reserved-car');
         reservedCar.classList.add('mb-5');
         reservedCar.innerHTML = reservedRideContent;
-        clearInterval(sessionStorage.getItem('countDown'))
         startCountDown(reservedCar, object);
         element.append(reservedCar);
         reservedCar.getElementsByClassName('cancelReservedbtn')[0].addEventListener('click', handleCancelClicked);
@@ -817,6 +840,11 @@ function handleViewDetails(event){
         </div>
         `;
         document.getElementsByClassName('viewDetailsInfo')[0].innerHTML = content;
+        clearInterval(sessionStorage.getItem('countDown'));
+        var str = time.replace('Reserved time: ', '').replace(':', ' ');
+        var strArray = str.split(' ');
+        var object = {chosenDate: strArray[0], chosenHour: strArray[1], chosenMin: strArray[2]};
+        startCountDownViewRide(object);
 }
 
 function handleEditReservation(){
@@ -829,11 +857,11 @@ function handleSaveClickedReservation(event){
     var chosenDate = document.getElementById('chosen-date-reserve').value;
     var chosenHour = document.getElementById('chosen-hour-reserve').value;
     var chosenMin = document.getElementById('chosen-minute-reserve').value;
-    var prevId = newInfo.getElementsByClassName('ride-date')[0].innerText.replace('Reserved time: ', '').replaceAll(':', '').replaceAll('-', '');
+    var prevId = newInfo.getElementsByClassName('ride-date')[0].innerText.replace('Reserved time: ', '').replaceAll(':', '').replaceAll('-', '').replaceAll(' ', '');
     var user = JSON.parse(sessionStorage.getItem(getUserID()));
     var reserved = user.reservedCars;
-    newInfo.getElementsByClassName('ride-date')[0].innerHTML = `Reserved time: ${chosenDate}-${chosenHour}:${chosenMin}`;
-    viewDetailsElement.getElementsByClassName('ride-date')[0].innerHTML = `Reserved time: ${chosenDate}-${chosenHour}:${chosenMin}`
+    newInfo.getElementsByClassName('ride-date')[0].innerHTML = `Reserved time: ${chosenDate} ${chosenHour}:${chosenMin}`;
+    viewDetailsElement.getElementsByClassName('ride-date')[0].innerHTML = `Reserved time: ${chosenDate} ${chosenHour}:${chosenMin}`
         
     for(var i = 0; i < reserved.length; i++){
         var car = reserved[i];
@@ -842,6 +870,8 @@ function handleSaveClickedReservation(event){
             car.chosenDate = chosenDate; 
             car.chosenHour = chosenHour;
             car.chosenMin = chosenMin;
+            clearInterval(sessionStorage.getItem('countDown'));
+            startCountDownViewRide(car);
         }
     }
     var reserved = user.reservedCars;
@@ -851,6 +881,7 @@ function handleSaveClickedReservation(event){
     }
     sessionStorage.setItem(getUserID(), JSON.stringify(user));
     document.getElementsByClassName('edit-reservation')[0].setAttribute('hidden', 'true');
+
 }
 
 function checkIfCurrentIsEmpty(modal){
@@ -912,9 +943,9 @@ function handleStartNowClicked(event){
     const currentDate = new Date()
     var timeDate = currentDate.getDate() + "/" + (currentDate.getMonth() + 1) + " " + checkTime(currentDate.getHours()) + ":" + checkTime(currentDate.getMinutes());
     var currentRideContent = `
-    <div class="card w-80 rounded-3 rounded-md-pill shadow-sm" >
+    <div class="card w-80 rounded-3-card rounded-md-pill shadow-sm" >
         <div class="row d-flex align-items-center flex-row g-0 me-4">
-                <div class="col-md-4 d-flex justify-content-center justify-content-lg-start mt-2">
+                <div class="col-md-4 d-flex justify-content-center justify-content-lg-start mt-2 mt-md-0">
                     <img src="${pictureUrl}" class="img-fluid rounded-pill picture-Url" style="height: 15rem;"/>
                 </div>
                 <div class="col-md-8">
@@ -979,11 +1010,14 @@ var cancelElement
 function removeReservedCar(event){
     var user = JSON.parse(sessionStorage.getItem(getUserID()))
     var reserved = user.reservedCars;
-    
+    var cancelId;
+    if(event instanceof Event) {
         var button = event.target;
         var container = button.parentElement.parentElement;
-        var cancelId = container.getElementsByClassName('ride-date')[0].innerText.replace('Reserved time: ', '').replaceAll(':', '').replaceAll('-', '');
-    
+        cancelId = container.getElementsByClassName('ride-date')[0].innerText.replace('Reserved time: ', '').replaceAll(':', '').replaceAll('-', '').replaceAll(' ', '');
+    } else {
+        cancelId = event.getElementsByClassName('ride-date')[0].innerText.replace('Reserved time: ', '').replaceAll(':', '').replaceAll('-', '').replaceAll(' ', '');
+    }
     for(var i = 0; i < reserved.length; i++){
         var car = reserved[i];
         var currentId = (car.chosenDate + "" + car.chosenHour + "" + car.chosenMin).replaceAll('-', '');
@@ -1175,13 +1209,18 @@ function createPreviousRidesContent(object){
             </div>
         </section>`;
         var previousContent = `
-            <div class="card w-80 rounded-3 rounded-md-pill shadow-sm" >
+            <div class="card w-80 rounded-3-card rounded-md-pill shadow-sm" >
                 <div class="ms-3 me-4 my-2 row d-flex align-items-center flex-row g-0">
                     <div class="card-body d-flex flex-row row g-0">
-                        <div class="col-md-8">
-                            <h4 class="card-title">${object.date}</h5>
-                            <h6>${object.endTime}</h6>
-                            <h6>${object.carTotal}</h6>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <div class="d-flex align-items-center me-4">
+                                <span class="material-icons circle-icon-prev-ride">circle</span>
+                            </div>
+                            <div>
+                                <h4 class="card-title">${object.date}</h5>
+                                <h6>${object.endTime}</h6>
+                                <h6>${object.carTotal}</h6>
+                            </div>
                         </div>                            
 
                         <div class="d-flex align-items-md-end align-items-center flex-column justify-content-evenly col-md-4 ps-3">

@@ -124,7 +124,7 @@ function authStateObserver(user) {
         signInButtonElement.removeAttribute('hidden')
 
         if (document.getElementsByClassName('history-tag')[0]){
-            document.getElementsByClassName('reserved-container')[0].setAttribute('hidden', 'true');
+            document.getElementsByClassName('reserved-container').setAttribute('hidden', 'true')
             document.getElementsByClassName('currentRideInfo')[0].innerHTML = `<h3>You do not have any current ride </h3>`;
             document.getElementsByClassName('previous-rides')[0].innerHTML = "<h5>Please log-in to see your previous rides or end a ride</h5>";
         }
@@ -215,7 +215,10 @@ function saveCurrentCar(key){
 }
 
 var cars = {
-    car1: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '54% battery', plate: 'AB 12345', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.66006357924885', lon: '12.591008245588563', marker: '' }
+    car1: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '54% battery', plate: 'AB 12345', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.66006357924885', lon: '12.591008245588563', marker: '' },
+    car2: { carBrand: 'Renault Zoe', fuelType: 'Benzin', fuelLeft: '21 L', plate: 'QD 21435', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.657880', lon: '12.593162', marker:''},
+    car3: { carBrand: 'Renault Zoe', fuelType: 'Benzin', fuelLeft: '32 L', plate: 'XD 87695', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.662045', lon: '12.592516', marker: ''},
+    car4: { carBrand: 'Renault Zoe', fuelType: 'Electric', fuelLeft: '43% battery', plate: 'CD 54321', price: '4', pictureUrl: 'images/carPhoto.jpeg', lat: '55.661837', lon: '12.600712', marker:''}
 }
 
 function getLocation() {
@@ -251,6 +254,7 @@ function initHistory(){
                 document.getElementsByClassName('previous-rides')[0].innerHTML = "<h5>Please log-in to see your previous rides or end a ride</h5>";
                 
             }
+            console.log(JSON.parse(sessionStorage.getItem(getUserID())).reservedCars)
             if (JSON.parse(sessionStorage.getItem(getUserID())).reservedCars.length =! 0){
                 document.getElementsByClassName('reserved-container')[0].removeAttribute('hidden');
                 var user = JSON.parse(sessionStorage.getItem(getUserID()));
@@ -615,7 +619,10 @@ function handleConfirmRent(event){
                             <button type="button" class="btn btn-primary float-end rounded-pill shadow-sm" id="endRidebtn" data-bs-toggle="modal" data-bs-target="#confirmEndRideModal">End ride</button>
                         </div>  
                     </div>
-                </div>                    
+                </div>
+                <div class="container">
+                     <a href="#" class="btn btn-danger float-end rounded" id="endRidebtn" data-bs-toggle="modal" data-bs-target="#confirmEndRideModal">End ride</a>
+                </div>                       
             </div>
         </div>
     `;
@@ -789,14 +796,17 @@ function createReservedCars(object){
                             <button type="button" class="btn btn-danger rounded-pill cancelReservedbtn shadow-sm mb-1" data-bs-toggle="modal" data-bs-target="#cancelReservedModal">Cancel</button>
                         </div>  
                     </div>
-                </div>                    
+                </div>
+                <div class="container">
+                     <button type="button" class="btn btn-danger float-end rounded startRidebtn" data-bs-toggle="modal" data-bs-target="#confirmRentModal">Start ride now</button>
+                     <button type="button" class="btn btn-danger float-end rounded cancelReservedbtn" data-bs-toggle="modal" data-bs-target="#cancelReservedModal">Cancel</button>
+                </div>                       
             </div>
         </div>
     `;
         var element = document.getElementsByClassName('reserved-rides')[0]
         var reservedCar = document.createElement('div');
         reservedCar.classList.add('reserved-car');
-        reservedCar.classList.add('mb-5');
         reservedCar.innerHTML = reservedRideContent;
         startCountDown(reservedCar, object);
         element.append(reservedCar);
@@ -899,7 +909,7 @@ function checkIfCurrentIsEmpty(modal){
 function handleConfirmRentStartNow(event){
     if (JSON.parse(sessionStorage.getItem(getUserID())).currentRide == ''){
         var button = event.target;
-        var carInfo = button.parentElement.parentElement.parentElement.parentElement;
+        var carInfo = button.parentElement.parentElement;
         var pictureUrl = carInfo.getElementsByClassName('picture-Url')[0].src;
         var carBrand = carInfo.getElementsByClassName('car-brand')[0].innerText;
         var fuelLeft = carInfo.getElementsByClassName('car-fuel-left')[0].innerText;
@@ -962,7 +972,10 @@ function handleStartNowClicked(event){
                             <button type="button" class="btn btn-primary float-end rounded-pill shadow-sm" id="endRidebtn" data-bs-toggle="modal" data-bs-target="#confirmEndRideModal">End ride</button>
                         </div>  
                     </div>
-                </div>                    
+                </div>
+                <div class="container">
+                     <a href="#" class="btn btn-danger float-end rounded" id="endRidebtn" data-bs-toggle="modal" data-bs-target="#confirmEndRideModal">End ride</a>
+                </div>                       
             </div>
         </div>
     `;
@@ -978,7 +991,7 @@ function handleStartNowClicked(event){
 
 function handleCancelClicked(event){
     var button = event.target;
-    var parent = button.parentElement.parentElement.parentElement.parentElement;
+    var parent = button.parentElement.parentElement;
     var pictureUrl = parent.getElementsByClassName('picture-Url')[0].src;
     var carBrand = parent.getElementsByClassName('car-brand')[0].innerText;
     var carPlate = parent.getElementsByClassName('car-plate')[0].innerText;
@@ -1021,6 +1034,7 @@ function removeReservedCar(event){
     for(var i = 0; i < reserved.length; i++){
         var car = reserved[i];
         var currentId = (car.chosenDate + "" + car.chosenHour + "" + car.chosenMin).replaceAll('-', '');
+        console.log(currentId + " " + cancelId)
         if (parseInt(currentId) == parseInt(cancelId)) {
             reserved.splice(i, 1);
             user.reservedCars = reserved;
